@@ -1,0 +1,4 @@
+export const ACTIONS= {
+	SET_TEST_STATE : "SET_TEST_STATE",
+	SET_APP_THEME: "SET_APP_THEME"
+}
