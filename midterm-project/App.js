@@ -8,6 +8,8 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Welcome from "./src/screens/Welcome";
 import {NavigationContainer} from "@react-navigation/native";
+import Signin from "./src/screens/Signin";
+import Signup from "./src/screens/Signup";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -16,10 +18,8 @@ const Tab = createBottomTabNavigator()
 export default function App() {
   return (
         <AppStateProvider>
-
            <NavigationContainer>
               <StackNavigator/>
-              {/*<TabNavigator/>*/}
            </NavigationContainer>
         </AppStateProvider>
   );
@@ -29,6 +29,8 @@ function StackNavigator(){
    return(
       <Stack.Navigator initialRouteName="Welcome">
          <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
+         <Stack.Screen name="Signin" component={Signin} options={{headerShown: false}}/>
+         <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}}/>
          <Stack.Screen name="TabContent" component={TabNavigator} options={{headerShown: false}}/>
       </Stack.Navigator>
    )

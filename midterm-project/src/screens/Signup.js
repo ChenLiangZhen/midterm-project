@@ -9,8 +9,8 @@ const Welcome = ({navigation}) => {
 		<BaseContainer justifyContent="center" alignItems="center">
 			<StatusBar barStyle="dark-content"/>
 			<VStack marginBottom={32} height="25%" width="100%"  align justifyContent="space-between">
-				<VarText type="xxl" content="Welcome!"/>
-				<RightArrow color="black" size={32} onPress={()=> navigation.navigate("Signin")}/>
+				<VarText type="xl" content="Welcome!"/>
+				<RightArrow color="black" size={32} onPress={()=> navigation.navigate("Signup")} navigation={navigation}/>
 			</VStack>
 		</BaseContainer>
 	)
