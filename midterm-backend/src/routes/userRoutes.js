@@ -10,35 +10,19 @@ router.post("/api/signup", async (req, res) => {
 	const { email, password } = req.body
 
 	try{
+
+		//以 User Model 建立新的使用者，並儲存使用者至資料庫
 		const user = new User({ email, password })
 		await user.save()
 
+		//使用用戶 id 與伺服器端私鑰產生 Json Web Token，並回傳。 回傳的 Token 必須存放於使用者裝置。
 		const token = jwt.sign({userId: user._id}, "SECRET_KEY")
-
 		res.send({ token })
-
-		const sgMail = require('@sendgrid/mail')
-		sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-		const msg = {
-			to: 'test@example.com', // Change to your recipient
-			from: 'test@example.com', // Change to your verified sender
-			subject: 'Sending with SendGrid is Fun',
-			text: 'and easy to do anywhere, even with Node.js',
-			html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-		}
-		sgMail
-			.send(msg)
-			.then(() => {
-				console.log('Email sent')
-			})
-			.catch((error) => {
-				console.error(error)
-			})
 
 	} catch(e){
 
-		res.status(422).send("Post request failed: " + e)
-		console.log("Error caught: " + e)
+		res.status(422).send("Signup Failed: " + e)
+		console.log("[Sign Up]: " + e)
 	}
 
 })
@@ -49,8 +33,8 @@ router.post('/api/signin', async(req, res) => {
 	if(!email || !password){
 		return res.status(422).send({ error: "must provide email and password."})
 	}
+	//尋找該 email 的使用者是否存在。 若不在則回傳錯誤。
 	const user = await User.findOne({ email })
-
 	if(!user){
 		return res.status(422).send({ error: "invalid password of email"})
 	}
