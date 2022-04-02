@@ -7,28 +7,32 @@ export function VarText({type, content, ...props}){
 
 	switch(type){
 		case "mc":
-			Object.assign(styleObj, { fontSize: 13 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 13})
 			break
 		case "sm":
-			Object.assign(styleObj, { fontSize: 14 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 14})
 			break
 		case "md":
-			Object.assign(styleObj, { fontSize: 16 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 16})
 			break
 		case "lg":
-			Object.assign(styleObj, { fontSize: 20 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 20})
 			break
 		case "xl":
-			Object.assign(styleObj, { fontSize: 24 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 24})
 			break
 		case "xxl":
-			Object.assign(styleObj, { fontSize: 30 ,	fontWeight: "bold"})
+			Object.assign(styleObj, { fontSize: 30})
 			break
 	}
 
 
 	return(
-		<Text style={[styleObj, {...props}]}>
+		<Text style={[styleObj, {
+			fontWeight: props.bold? "bold":"normal",
+			...props
+		}
+		]}>
 			{content}
 		</Text>
 	)

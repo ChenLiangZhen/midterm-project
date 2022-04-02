@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5275a17c-6a61-4e7e-b3bb-e94f4537f0cd" name="mid-backend" url="http://139.59.106.164">
+        <fileTransfer rootFolder="/home/lightiichen/mid-backend" accessType="SFTP" host="139.59.106.164" port="22" sshConfigId="e3867bef-7b83-4a4b-8719-56d221ac1820" sshConfig="lightiichen@139.59.106.164:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

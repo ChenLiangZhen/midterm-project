@@ -1,4 +1,4 @@
-import {StatusBar, View} from "react-native";
+import {KeyboardAvoidingView, Platform, Pressable, StatusBar, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
 export function BaseContainer({children, type, ...props}){
@@ -8,22 +8,26 @@ export function BaseContainer({children, type, ...props}){
 				height: "100%",
 				width: "100%",
 			}}>
-				<View style={{
+				<KeyboardAvoidingView
+					behavior={Platform.OS === "ios" ? "padding": "height"}
+					style={{
 					height: "100%",
 					...props}}>
 					{children}
-				</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 			:
 			<SafeAreaView style={{
 				height: "100%",
 				width: "100%",
 			}}>
-				<View style={{
+				<KeyboardAvoidingView
+					behavior={Platform.OS === "ios" ? "padding": "height"}
+					style={{
 					height: "100%",
 					...props}}>
 					{children}
-				</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 	)
 }
@@ -51,6 +55,33 @@ export function VStack({children, ...props}){
 		}}>
 			{children}
 		</View>
+	)
+}
+
+export function Container({children, ...props}){
+	return(
+		<View style={{
+			justifyContent: props.justify || props.center ? "center" : undefined,
+			alignItems: props.align || props.center ? "center" : undefined,
+			...props
+		}}>
+			{children}
+		</View>
+	)
+}
+
+export function PressBox({children, onPress, ...props}){
+	return(
+		<Pressable
+			onPress={onPress}
+			style={{
+				flexDirection: "row",
+				justifyContent: props.justify || props.center ? "center" : undefined,
+				alignItems: props.align || props.center ? "center" : undefined,
+				...props
+		}}>
+			{children}
+		</Pressable>
 	)
 }
 

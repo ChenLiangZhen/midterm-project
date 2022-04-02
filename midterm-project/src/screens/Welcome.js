@@ -1,7 +1,7 @@
 import {BaseContainer, VStack} from "../components/Layout";
 import {Animated, StatusBar, Text} from "react-native";
 import {VarText} from "../components/Text";
-import {RightArrow} from "../components/IconButton";
+import {HeartSplash, RightArrow} from "../components/IconButton";
 import {useSpring, animated, config} from "@react-spring/native"
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useFocusEffect} from "@react-navigation/native";
@@ -37,14 +37,13 @@ const Welcome = ({navigation}) => {
 		<BaseContainer justifyContent="center" alignItems="center">
 			<StatusBar barStyle="dark-content"/>
 
-
 				<animated.View style={[welcomeStyle, {
 					alignItems: "center",
 					justifyContent: "space-between",
 					width:"100%",
 					marginBottom: 8
 				}]}>
-					<VarText type="xxl" content="Welcome!"/>
+					<VarText type="xxl" content="歡迎"/>
 				</animated.View>
 
 				<animated.View style={[welcomeStyle, {
@@ -53,17 +52,18 @@ const Welcome = ({navigation}) => {
 					height:"40%",
 					width:"100%",
 				}]}>
-					<VarText type="md" content="your life starts here."/>
+					<VarText type="md" content="生活由此開始"/>
 				</animated.View>
+
+			  <HeartSplash/>
 
 				<animated.View style={[arrow, {
 					alignItems:"center",
 					marginBottom: 64,
 
 				}]}>
-					<RightArrow color="black" size={36} onPress={()=> {
+					<RightArrow color="black" size={32} onPress={()=> {
 						navigation.navigate("Signin")
-						setPresent(false)
 					}}
 						/>
 				</animated.View>
