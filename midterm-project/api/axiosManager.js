@@ -2,7 +2,7 @@ import axios from "axios"
 import {getToken} from "../src/utility/asyncManager";
 
 const baseURL= "https://lightii.dev/"
-const baseTestURL= "https://5c88-118-150-24-238.ngrok.io"
+const baseTestURL= "https://lightii.ap.ngrok.io"
 
 const request = axios.create({
 	baseURL: baseTestURL,

@@ -25,7 +25,10 @@ router.post("/api/signup", async (req, res) => {
 		linkId = user._id
 		userData = "xvnfjdxlvn"
 
-		const data = new UserData({linkId , userData})
+		const data = new UserData({
+			userLink :linkId ,
+			data: userData})
+		await data.save()
 
 		const token = jwt.sign({userId: user._id}, "U0VDUkVUX0tFWV9PRl9NSURURVJNX1BST0pFQ1Q=")
 		res.send({ token })
