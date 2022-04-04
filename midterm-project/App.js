@@ -10,6 +10,8 @@ import Welcome from "./src/screens/Welcome";
 import {NavigationContainer} from "@react-navigation/native";
 import Signin from "./src/screens/Signin";
 import Signup from "./src/screens/Signup";
+import Today from "./src/screens/note/Today";
+import MoodWriting from "./src/screens/note/MoodWriting";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -27,8 +29,10 @@ export default function App() {
 
 function StackNavigator(){
    return(
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="MoodWriting">
          <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
+         <Stack.Screen name="Today" component={Today} options={{headerShown: false}}/>
+         <Stack.Screen name="MoodWriting" component={MoodWriting} options={{headerShown: false}}/>
          <Stack.Screen name="Signin" component={Signin} options={{headerShown: false}}/>
          <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}}/>
          <Stack.Screen name="TabContent" component={TabNavigator} options={{headerShown: false}}/>

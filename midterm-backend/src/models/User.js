@@ -11,6 +11,8 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+}, {
+	collection: "user_account"
 });
 
 UserSchema.pre("save", function(next){
@@ -57,4 +59,4 @@ UserSchema.methods.comparePassword = function(userInputPassword){
 	})
 }
 
-mongoose.model('Users', UserSchema);
+mongoose.model('user_account', UserSchema);

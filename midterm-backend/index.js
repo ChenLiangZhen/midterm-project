@@ -1,4 +1,5 @@
 require("./src/models/User")
+require("./src/models/UserData")
 const cors = require("cors")
 const express = require("express")
 const mongoose = require("mongoose");
@@ -13,12 +14,13 @@ app.use(express.json());
 app.use(userRoutes)
 
 
-const testUri = 'mongodb://client:testdatabase@localhost:30123/?authSource=admin'
-mongoose.connect(testUri)
+const URI = 'mongodb://client:testdatabase@localhost:30123/?authSource=admin'
+const testURI = 'mongodb://localhost:27017'
+mongoose.connect(testURI)
    .then(() => { console.log("successfully connected modified!!") }, rej => {console.log("failed to connect: " + rej)})
 
 app.get("/api", userAuth, (req, res)=>{
-  res.send(`your email is: ${req.user.email}`)
+  res.send(`your email is: ${req.user.email} and your data is: ${req.data}`)
 })
 
 const PORT= 3000;

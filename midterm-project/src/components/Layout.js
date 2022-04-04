@@ -13,6 +13,9 @@ export function BaseContainer({children, type, ...props}){
 					style={{
 					height: "100%",
 					...props}}>
+
+					<StatusBar barStyle="dark-content" backgroundColor="white"/>
+
 					{children}
 				</KeyboardAvoidingView>
 			</SafeAreaView>
@@ -26,6 +29,10 @@ export function BaseContainer({children, type, ...props}){
 					style={{
 					height: "100%",
 					...props}}>
+
+					<StatusBar barStyle="dark-content" backgroundColor="white"/>
+
+
 					{children}
 				</KeyboardAvoidingView>
 			</SafeAreaView>
@@ -76,8 +83,8 @@ export function PressBox({children, onPress, ...props}){
 			onPress={onPress}
 			style={{
 				flexDirection: "row",
-				justifyContent: props.justify || props.center ? "center" : undefined,
-				alignItems: props.align || props.center ? "center" : undefined,
+				justifyContent: "center" ,
+				alignItems: "center",
 				...props
 		}}>
 			{children}

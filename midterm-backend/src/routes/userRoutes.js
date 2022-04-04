@@ -1,13 +1,15 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken");
-const User = mongoose.model("Users")
+const User = mongoose.model("user_account")
+const UserData = mongoose.model("user_data")
 
 const router = express.Router()
 
 router.post("/api/signup", async (req, res) => {
 
 	const { email, password } = req.body
+	let linkId, userData
 
 	try{
 
@@ -15,8 +17,17 @@ router.post("/api/signup", async (req, res) => {
 		const user = new User({ email, password })
 		await user.save()
 
+
+
 		//使用用戶 id 與伺服器端私鑰產生 Json Web Token，並回傳。 回傳的 Token 必須存放於使用者裝置。
-		const token = jwt.sign({userId: user._id}, "SECRET_KEY")
+		//SECRET_KEY_OF_MIDTERM_PROJECT，Base64 Encoded.
+
+		linkId = user._id
+		userData = "xvnfjdxlvn"
+
+		const data = new UserData({linkId , userData})
+
+		const token = jwt.sign({userId: user._id}, "U0VDUkVUX0tFWV9PRl9NSURURVJNX1BST0pFQ1Q=")
 		res.send({ token })
 
 	} catch(e){
@@ -41,7 +52,7 @@ router.post('/api/signin', async(req, res) => {
 
 	try{
 		await user.comparePassword(password)
-		const token = jwt.sign({ userId: user._id }, "SECRET_KEY")
+		const token = jwt.sign({ userId: user._id }, "U0VDUkVUX0tFWV9PRl9NSURURVJNX1BST0pFQ1Q=")
 		res.send({ token })
 	}catch (e){
 		return res.status(422).send({ error: "invalid password of email"})
