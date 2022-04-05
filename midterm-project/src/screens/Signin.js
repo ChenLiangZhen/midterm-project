@@ -1,7 +1,7 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../components/Layout";
 import {StatusBar, Text, TextInput, View} from "react-native";
 import {VarText} from "../components/Text";
-import {RightArrow} from "../components/IconButton";
+import {RightArrowIcon} from "../components/IconButton";
 import {useFocusEffect} from "@react-navigation/native";
 import {useCallback, useState} from "react";
 import {config,animated, useSpring} from "@react-spring/native";
@@ -115,12 +115,12 @@ const Welcome = ({navigation}) => {
 				<animated.View style={pressbox}>
 					<PressBox padding={4} width={100} align onPress={()=> navigation.navigate("Welcome")}>
 						<VarText type="md" content="登入" color="dimgray" marginRight={4}/>
-						<RightArrow color="dimgray" size={20}/>
+						<RightArrowIcon color="dimgray" size={20}/>
 					</PressBox>
 
 					<PressBox padding={4} width={100} align onPress={()=> navigation.navigate("Welcome")}>
 						<VarText type="md" content="登入" color="dimgray" marginRight={4}/>
-						<RightArrow color="dimgray" size={20}/>
+						<RightArrowIcon color="dimgray" size={20}/>
 					</PressBox>
 				</animated.View>
 

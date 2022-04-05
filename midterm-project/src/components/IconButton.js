@@ -3,7 +3,7 @@ import {Pressable} from "react-native";
 import {config, animated, useSpring} from "@react-spring/native";
 import {useState} from "react";
 
-export function RightArrow({color, size, onPress, ...props}){
+export function RightArrowIcon({color, size, onPress, ...props}){
 	return(
 		<Pressable style={{
 			justifyContent: "center",
@@ -15,6 +15,70 @@ export function RightArrow({color, size, onPress, ...props}){
 			onPress={onPress}
 		>
 			<Feather name="chevron-right" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function LeftArrowIcon({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="chevron-left" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function FeatherPenIcon({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="feather" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function SearchIcon({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="search" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function NoteOption({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="more-horizontal" color={color} size={size}/>
 		</Pressable>
 	)
 }

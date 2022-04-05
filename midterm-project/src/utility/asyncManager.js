@@ -13,6 +13,15 @@ export async function getToken(){
 	}
 }
 
-export function request(){
+export async function saveNoteData(value){
+	await SecureStore.setItemAsync("note_data", value)
+}
 
+export async function getNoteData(){
+	let result = await SecureStore.getItemAsync("note_data");
+	if (result) {
+		return result
+	} else {
+		console.log("no data stored!")
+	}
 }

@@ -17,6 +17,7 @@ export async function requestManager(method: String, route: String, body: Object
 	return new Promise( async (resolve, reject)=>{
 		switch(method){
 			case "get":
+
 				request.get(route, Object.assign({
 					headers: { Authorization: `Bearer ` + pureToken}
 				}, body))
@@ -24,6 +25,7 @@ export async function requestManager(method: String, route: String, body: Object
 						resolve(res.data)
 					})
 				break
+
 			case "post":
 				request.get(route, Object.assign({
 					headers: { Authorization: `Bearer ` + pureToken}

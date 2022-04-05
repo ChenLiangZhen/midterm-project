@@ -1,7 +1,7 @@
 import {BaseContainer, VStack} from "../components/Layout";
 import {StatusBar, Text} from "react-native";
 import {VarText} from "../components/Text";
-import {RightArrow} from "../components/IconButton";
+import {RightArrowIcon} from "../components/IconButton";
 
 const Welcome = ({navigation}) => {
 
@@ -10,7 +10,7 @@ const Welcome = ({navigation}) => {
 			<StatusBar barStyle="dark-content"/>
 			<VStack marginBottom={32} height="25%" width="100%"  align justifyContent="space-between">
 				<VarText type="xl" content="Welcome!"/>
-				<RightArrow color="black" size={32} onPress={()=> navigation.navigate("Signup")} navigation={navigation}/>
+				<RightArrowIcon color="black" size={32} onPress={()=> navigation.navigate("Signup")} navigation={navigation}/>
 			</VStack>
 		</BaseContainer>
 	)

@@ -28,6 +28,8 @@ module.exports= (req, res, next) => {
 			}
 
 			return doc
+		}).clone().catch(err=>{
+			console.log("[GET]: " + err)
 		})
 		next()
 	})

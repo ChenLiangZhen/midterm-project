@@ -13,17 +13,46 @@ router.post("/api/signup", async (req, res) => {
 
 	try{
 
+		if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+			return res.status(400).send("Signup Failed: Email Invalid.")
+		}
+
 		//以 User Model 建立新的使用者，並儲存使用者至資料庫
 		const user = new User({ email, password })
 		await user.save()
-
 
 
 		//使用用戶 id 與伺服器端私鑰產生 Json Web Token，並回傳。 回傳的 Token 必須存放於使用者裝置。
 		//SECRET_KEY_OF_MIDTERM_PROJECT，Base64 Encoded.
 
 		linkId = user._id
-		userData = "xvnfjdxlvn"
+		userData = {
+			setting: {
+				theme: "dark"
+			},
+			notes:[
+				{
+					title: "this is a rainy day...",
+					content: "have you ever liked me...?"
+				},
+
+				{
+					title: "sometimes",
+					content: "fall into despair..."
+				},
+			],
+			bookmarked:[
+				{
+					title: "this is a rainy day...",
+					content: "have you ever liked me...?"
+				},
+
+				{
+					title: "sometimes",
+					content: "fall into despair..."
+				},
+			]
+		}
 
 		const data = new UserData({
 			userLink :linkId ,

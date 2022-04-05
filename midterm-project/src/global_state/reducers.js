@@ -31,6 +31,18 @@ const appReducer = (state, action) => {
 				testState: action.payload
 			};
 
+		case ACTIONS.SET_USER_NOTE_DATA:
+			return {
+				...state,
+				userNoteData: action.payload
+			}
+
+		case ACTIONS.SET_USER_SETTING:
+		return {
+			...state,
+			userSetting: action.payload
+		}
+
 	}};
 
 export default appReducer

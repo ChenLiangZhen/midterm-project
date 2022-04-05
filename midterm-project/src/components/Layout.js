@@ -1,7 +1,7 @@
 import {KeyboardAvoidingView, Platform, Pressable, StatusBar, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 
-export function BaseContainer({children, type, ...props}){
+export function BaseContainer({children, onTouchStart, type, ...props}){
 	return(
 		type === "tab"?
 			<SafeAreaView style={{

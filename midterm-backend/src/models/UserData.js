@@ -8,7 +8,7 @@ const UserDataSchema = new mongoose.Schema({
 		required: true
 	},
 	data: {
-		type: String,
+		type: Object,
 		required: true
 	},
 }, {

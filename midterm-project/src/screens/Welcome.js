@@ -1,7 +1,7 @@
 import {BaseContainer, VStack} from "../components/Layout";
 import {Animated, StatusBar, Text} from "react-native";
 import {VarText} from "../components/Text";
-import {HeartSplash, RightArrow} from "../components/IconButton";
+import {HeartSplash, RightArrowIcon} from "../components/IconButton";
 import {useSpring, animated, config} from "@react-spring/native"
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useFocusEffect} from "@react-navigation/native";
@@ -62,7 +62,7 @@ const Welcome = ({navigation}) => {
 					marginBottom: 64,
 
 				}]}>
-					<RightArrow color="black" size={32} onPress={()=> {
+					<RightArrowIcon color="black" size={32} onPress={()=> {
 						navigation.navigate("Signin")
 					}}
 						/>

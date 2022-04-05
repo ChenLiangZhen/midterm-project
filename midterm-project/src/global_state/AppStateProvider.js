@@ -5,7 +5,9 @@ import {appTheme} from "../utility/appTheme";
 
 const initialAppState = {
 	testState: "this is state!!!",
-	appTheme: appTheme.light
+	appTheme: appTheme.light,
+	userNoteData: {},
+	userSetting: {}
 }
 
 const AppStateProvider = ({children}) =>{

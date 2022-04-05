@@ -12,6 +12,7 @@ import Signin from "./src/screens/Signin";
 import Signup from "./src/screens/Signup";
 import Today from "./src/screens/note/Today";
 import MoodWriting from "./src/screens/note/MoodWriting";
+import {SafeAreaProvider} from "react-native-safe-area-context/src/SafeAreaContext";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -20,16 +21,20 @@ const Tab = createBottomTabNavigator()
 export default function App() {
   return (
         <AppStateProvider>
-           <NavigationContainer>
-              <StackNavigator/>
-           </NavigationContainer>
+           <SafeAreaProvider>
+
+              <NavigationContainer>
+                 <StackNavigator/>
+              </NavigationContainer>
+
+           </SafeAreaProvider>
         </AppStateProvider>
   );
 }
 
 function StackNavigator(){
    return(
-      <Stack.Navigator initialRouteName="MoodWriting">
+      <Stack.Navigator initialRouteName="Today">
          <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
          <Stack.Screen name="Today" component={Today} options={{headerShown: false}}/>
          <Stack.Screen name="MoodWriting" component={MoodWriting} options={{headerShown: false}}/>
