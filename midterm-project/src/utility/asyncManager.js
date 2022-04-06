@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function saveToken(value) {
 	await SecureStore.setItemAsync("token", value);
@@ -14,11 +15,11 @@ export async function getToken(){
 }
 
 export async function saveNoteData(value){
-	await SecureStore.setItemAsync("note_data", value)
+	await AsyncStorage.setItem("note_data", value)
 }
 
 export async function getNoteData(){
-	let result = await SecureStore.getItemAsync("note_data");
+	let result = await AsyncStorage.getItem("note_data");
 	if (result) {
 		return result
 	} else {

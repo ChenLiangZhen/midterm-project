@@ -4,7 +4,7 @@ import {useState} from "react";
 import { config, animated, useSpring } from "@react-spring/native";
 import {HEIGHT, WIDTH} from "../utility/deviceUtility";
 
-export function NoteHeader({navigation, onPress}){
+export function NoteHeader({navigation, onPressOption, onPressBack}){
 
 	const [showNoteOption, setShowNoteOption] = useState(false)
 	const noteOptionAnimation = useSpring({
@@ -15,8 +15,8 @@ export function NoteHeader({navigation, onPress}){
 
 	return(
 		<HStack align justifyContent="space-between" paddingVertical={4} paddingHorizontal={18}>
-			<LeftArrowIcon color="gray" size={30} onPress={()=> navigation.goBack()}/>
-			<NoteOption color="gray" size={28} onPress={onPress}/>
+			<LeftArrowIcon color="gray" size={30} onPress={onPressBack}/>
+			<NoteOption color="gray" size={28} onPress={onPressOption}/>
 
 			{ showNoteOption?
 				<animated.View style={[noteOptionAnimation, {

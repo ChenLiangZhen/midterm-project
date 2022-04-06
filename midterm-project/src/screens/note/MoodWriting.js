@@ -1,14 +1,28 @@
 import {BaseContainer, HStack, PressBox, VStack} from "../../components/Layout";
 import {FlatList, Pressable, TextInput} from "react-native";
-import {useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
 import {NoteHeader} from "../../components/DefinedLayout";
 import {animated, config, useSpring} from "@react-spring/native";
 import {HEIGHT, WIDTH} from "../../utility/deviceUtility";
 import {useSafeAreaFrame, useSafeAreaInsets} from "react-native-safe-area-context";
+import {AppContext} from "../../global_state/AppStateProvider";
+import {useFocusEffect} from "@react-navigation/native";
+import {ACTIONS} from "../../global_state/actions";
+import {saveNoteData} from "../../utility/asyncManager";
 
 const MoodWriting = ({navigation, route}) => {
-	const { title, content } = route.params
+
+	const { id, title, content } = route.params
+
+	const [state, dispatch] = useContext(AppContext)
+
+	// const [dataOfThisNote, setDataOfThisNote] = useState({
+	// 	id: Number,
+	// 	title: String,
+	// 	content: String
+	// })
+	// const [userNoteDataCopy, setUserNoteDataCopy] = useState({})
 
 	const [noteTitle, setNoteTitle] = useState(title)
 	const [noteContent, setNoteContent] = useState(content)
@@ -33,10 +47,77 @@ const MoodWriting = ({navigation, route}) => {
 		config: config.slow
 	})
 
+	// useFocusEffect(
+	// 	useCallback(async () => {
+	//
+	// 		await setUserNoteDataCopy(state.userNoteData)
+	//
+	// 		dataOfThisNote.id = id
+	// 		dataOfThisNote.title = noteTitle
+	// 		dataOfThisNote.content = noteContent
+	//
+	// 		console.log(userNoteDataCopy)
+	// 		console.log(dataOfThisNote)
+	// 		userNoteDataCopy.note[id] = dataOfThisNote
+	//
+	// 		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+	// 		console.log("FOCUSEFFECT!!!")
+	//
+	// 	}, [noteContent, noteTitle])
+	// );
+
+	useEffect(()=>{
+
+		console.log("reviewing ID = " + id)
+
+		//慘痛教訓：千萬不要在其他地方亂宣告變數，並且謹記使用 const 宣告物件，
+		//        才不會出現詭異的參照問題。
+
+		//先從全域變數複製一份資料，作為儲存全域變數時所用的代理變數
+		const userNoteDataCopy = state.userNoteData
+
+		//定義此note的儲存代理資料
+		const dataOfThisNote = {
+			id: String,
+			title: String,
+			content: String,
+		}
+
+		//設定此note的物件資料
+		dataOfThisNote.id = id
+		dataOfThisNote.title = noteTitle
+		dataOfThisNote.content = noteContent
+
+		console.log("This note: " + dataOfThisNote.id)
+
+		//以當前作用的note，尋找其在代理儲存資料中的index
+		const target = userNoteDataCopy.note.findIndex(note => note.id === id)
+		console.log(dataOfThisNote)
+
+		//將此筆資料儲存至該代理資料的[index]的位置
+		userNoteDataCopy.note[target] = dataOfThisNote
+		//
+		console.log("targetINdex: "+target)
+
+		//將改變後的代理資料儲存至全域變數
+		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+
+	}, [noteContent, noteTitle])
+
 	return(
 		<BaseContainer>
 			<Pressable onPress={()=>setShowNoteOption(false)}>
-				<NoteHeader navigation={navigation} onPress={()=> setShowNoteOption(true)}/>
+				<NoteHeader navigation={navigation}
+				            onPressOption={()=> {
+					setShowNoteOption(true)}}
+
+				            onPressBack={async ()=>{
+									await saveNoteData(JSON.stringify(state.userNoteData))
+					            console.log("userNoteData Saved")
+					            navigation.goBack()
+				            }}
+
+				/>
 
 				<animated.View style={[noteOptionAnimation, {
 					padding: 24,
@@ -103,11 +184,16 @@ const MoodWriting = ({navigation, route}) => {
 						color: "gray"
 					}}
 
+					multiline={true }
 					autoCapitalize="none"
 					selectionColor="gray"
 					placeholder="description"
 					value={noteContent}
-					onChangeText={(noteContent)=> setNoteContent(noteContent)}
+					onChangeText={async(noteContent)=> {
+						setNoteContent(noteContent)
+
+
+					}}
 				/>
 			</Pressable>
 		</BaseContainer>

@@ -1,46 +1,17 @@
-import {BaseContainer, Container, HStack} from "../../components/Layout";
+import {BaseContainer, Container, HStack, PressBox} from "../../components/Layout";
 import {FeatherPenIcon} from "../../components/IconButton";
-import {AppState, FlatList, Pressable, TextInput, View} from "react-native";
-import {useContext, useEffect, useState} from "react";
+import {AppState, FlatList, Pressable, Text, TextInput, View} from "react-native";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {VarText} from "../../components/Text";
 import {date} from "../../utility/dateManager";
 import {WIDTH} from "../../utility/deviceUtility";
 import {ACTIONS} from "../../global_state/actions";
+import {useFocusEffect} from "@react-navigation/native";
+import {getNoteData} from "../../utility/asyncManager";
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
-const TEST_DATA = {
-	note: [
-		{
-			id: 1,
-			title: "今天超雞掰！！！",
-			content: "從來沒想過會遇到這麼雞掰的一天．．．"
-		},
-		{
-			id: 2,
-			title: "今天超雞掰！！！",
-			content: "Sometimes thinking about quitting my job..."
-
-		},
-		{
-			id: 3,
-			title: "今天超雞掰！！！",
-			content: "Today I ran into Mary, what a small world !"
-		},
-		{
-			id: 4,
-			title: "今天超雞掰！！！",
-			content: "Sometimes thinking about quitting my job..."
-
-		},
-		{
-			id: 5,
-			title: "今天超雞掰！！！",
-			content: "Today I ran into Mary, what a small world !"
-		}
-	]
-}
-
-const NoteItem = ({title, content, mode, navigation}) => {
+const NoteItem = ({id, title, content, mode, navigation}) => {
 	return (
 		<Pressable style={{
 			overflow: "hidden",
@@ -52,8 +23,12 @@ const NoteItem = ({title, content, mode, navigation}) => {
 			borderColor: "#ddd",
 			borderWidth: 2,
 		}} onPress={()=>{
-			navigation.navigate("MoodWriting", {title: title, content: content})
-		}}>
+			navigation.navigate("MoodWriting", {id : id ,title: title, content: content })
+		}} onLongPress={()=>{
+			console.log("LONGGGG!!!")
+			SheetManager.show("helloworld_sheet" , {target: id});
+		}}
+		>
 			<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
 			<View style={{ backgroundColor:"lightgray", height:1 }}/>
 			<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
@@ -66,30 +41,75 @@ const Today = ({navigation}) => {
 
 	const [state, dispatch] = useContext(AppContext)
 
-	useEffect(()=>{
-		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: TEST_DATA})
-		console.log(state.userNoteData.note)
-	},[])
+	useFocusEffect(
+		useCallback(() => {
+		}, [])
+	);
 
 	const [searchData, setSearchData] = useState("")
 	const [displayMode, setDisplayMode] = useState("sd")
 
-	const renderNotes = ({item}) => ( <NoteItem title={item.title} content={item.content} navigation={navigation} mode={displayMode}/> )
+	const [actionSheetDeleteTarget, setActionSheetDeleteTarget] = useState("")
+
+	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode}/> )
 
 
 	return(
 
 		<BaseContainer>
+
+			<ActionSheet
+				id="helloworld_sheet"
+				overlayColor="transparent"
+				elevation={16}
+				onBeforeShow={(target)=>{
+					setActionSheetDeleteTarget(target.target)
+					console.log(target.target)
+				}}
+				containerStyle={{
+					height: 160,
+					backgroundColor: "gray"
+				}}
+			>
+				<Container flex={1}>
+					<PressBox width="100%" height={48} backgroundColor="white"
+						onPress={()=> {
+
+							const userNoteDataCopy = state.userNoteData
+
+							//將此筆資料儲存至該代理資料的[index]的位置
+							userNoteDataCopy.note.splice(actionSheetDeleteTarget, 1)
+
+							//將改變後的代理資料儲存至全域變數
+							dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+						}}
+					><VarText type={"sm"} content="DELETE"/></PressBox>
+				</Container>
+			</ActionSheet>
+
 			<HStack width="100%" justifyContent="space-between" padding={16} paddingHorizontal={22} align>
 				<HStack align>
 					<VarText type="xl" content={date.year + " - "} color="#ccc"/>
 					<VarText type="xl" content={date.month + " - "} color="gray"/>
 					<VarText type="xl" content={date.day} color="gray"/>
-				</HStack>
+					</HStack>
 
 
 				<FeatherPenIcon color="gray" size={24} onPress={()=>{
-					dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload:{}})
+
+					const userNoteDataCopy = state.userNoteData
+
+					const newNote = {
+						id: ""   +new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
+						content: "" ,
+						title: ""
+					}
+
+					console.log(state.userNoteData)
+					console.log(userNoteDataCopy)
+					userNoteDataCopy.note.push(newNote)
+
+					navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content})
 				}}/>
 
 			</HStack>
