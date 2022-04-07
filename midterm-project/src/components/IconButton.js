@@ -8,8 +8,8 @@ export function RightArrowIcon({color, size, onPress, ...props}){
 		<Pressable style={{
 			justifyContent: "center",
 			alignItems: "center",
-			height: size +4,
-			width: size +4,
+			height: size +8,
+			width: size +8,
 			...props
 		}}
 			onPress={onPress}
@@ -24,8 +24,8 @@ export function LeftArrowIcon({color, size, onPress, ...props}){
 		<Pressable style={{
 			justifyContent: "center",
 			alignItems: "center",
-			height: size +4,
-			width: size +4,
+			height: size +8,
+			width: size +8,
 			...props
 		}}
 			onPress={onPress}

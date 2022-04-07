@@ -1,13 +1,12 @@
-import {BaseContainer, HStack, PressBox, VStack} from "../../components/Layout";
-import {FlatList, Keyboard, Pressable, TextInput} from "react-native";
-import {useCallback, useContext, useEffect, useState} from "react";
+import {BaseContainer, HStack, VStack} from "../../components/Layout";
+import {Keyboard, Pressable, TextInput} from "react-native";
+import {useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
 import {NoteHeader} from "../../components/DefinedLayout";
 import {animated, config, useSpring} from "@react-spring/native";
 import {HEIGHT, WIDTH} from "../../utility/deviceUtility";
-import {useSafeAreaFrame, useSafeAreaInsets} from "react-native-safe-area-context";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {AppContext} from "../../global_state/AppStateProvider";
-import {useFocusEffect} from "@react-navigation/native";
 import {ACTIONS} from "../../global_state/actions";
 import {saveNoteData} from "../../utility/asyncManager";
 

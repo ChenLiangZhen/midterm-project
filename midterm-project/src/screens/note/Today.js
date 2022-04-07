@@ -1,18 +1,14 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
 import {FeatherPenIcon} from "../../components/IconButton";
-import {AppState, FlatList, Pressable, Text, TextInput, View} from "react-native";
-import {createRef, useCallback, useContext, useEffect, useState} from "react";
+import {FlatList, Pressable, Vibration, View} from "react-native";
+import {createRef, useCallback, useContext, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {VarText} from "../../components/Text";
-import {date} from "../../utility/dateManager";
 import {WIDTH} from "../../utility/deviceUtility";
 import {ACTIONS} from "../../global_state/actions";
 import {useFocusEffect} from "@react-navigation/native";
-import {getNoteData} from "../../utility/asyncManager";
-import ActionSheet, { SheetManager } from "react-native-actions-sheet";
-import {config, animated, useTransition} from "@react-spring/native";
-import {SafeAreaView} from "react-native-safe-area-context";
-import { Vibration, Keyboard } from "react-native";
+import ActionSheet, {SheetManager} from "react-native-actions-sheet";
+import {animated, config, useTransition} from "@react-spring/native";
 
 const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
 
