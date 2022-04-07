@@ -7,11 +7,12 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 			<SafeAreaView style={{
 				height: "100%",
 				width: "100%",
-			}}>
+				flex: 1,
+			}} edges={['top','right', 'bottom', 'left']}>
 				<KeyboardAvoidingView
 					behavior={Platform.OS === "ios" ? "padding": "height"}
 					style={{
-					height: "100%",
+						flex: 1,
 					...props}}>
 
 					<StatusBar barStyle="dark-content" backgroundColor="white"/>
@@ -23,12 +24,15 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 			<SafeAreaView style={{
 				height: "100%",
 				width: "100%",
-			}}>
+				flex: 1,
+
+			}} edges={['top','right', 'bottom', 'left']} >
 				<KeyboardAvoidingView
 					behavior={Platform.OS === "ios" ? "padding": "height"}
 					style={{
-					height: "100%",
-					...props}}>
+						flex: 1,
+
+						...props}}>
 
 					<StatusBar barStyle="dark-content" backgroundColor="white"/>
 

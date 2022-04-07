@@ -1,7 +1,7 @@
-import {BaseContainer, Container, HStack, PressBox} from "../../components/Layout";
+import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
 import {FeatherPenIcon} from "../../components/IconButton";
 import {AppState, FlatList, Pressable, Text, TextInput, View} from "react-native";
-import {useCallback, useContext, useEffect, useState} from "react";
+import {createRef, useCallback, useContext, useEffect, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {VarText} from "../../components/Text";
 import {date} from "../../utility/dateManager";
@@ -10,39 +10,98 @@ import {ACTIONS} from "../../global_state/actions";
 import {useFocusEffect} from "@react-navigation/native";
 import {getNoteData} from "../../utility/asyncManager";
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
+import {config, animated, useTransition} from "@react-spring/native";
+import {SafeAreaView} from "react-native-safe-area-context";
+import { Vibration, Keyboard } from "react-native";
 
-const NoteItem = ({id, title, content, mode, navigation}) => {
-	return (
-		<Pressable style={{
-			overflow: "hidden",
-			height: 108,
-			width: mode === "single"? (WIDTH - 32) : (WIDTH - 52) /2,
-			margin: 8,
-			backgroundColor: "#ececec",
-			borderRadius: 10,
-			borderColor: "#ddd",
-			borderWidth: 2,
-		}} onPress={()=>{
-			navigation.navigate("MoodWriting", {id : id ,title: title, content: content })
-		}} onLongPress={()=>{
-			console.log("LONGGGG!!!")
-			SheetManager.show("helloworld_sheet" , {target: id});
-		}}
-		>
-			<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
-			<View style={{ backgroundColor:"lightgray", height:1 }}/>
-			<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
+const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
 
-		</Pressable>
+	const [selectedStyle, setSelectedStyle] = useState(false)
+
+	const transitions = useTransition(true, {
+		from: { left: 100, opacity: 0 },
+		enter: { left: 0, opacity: 1 },
+		leave: { opacity: 0 },
+		// reverse: show,
+		delay: 50,
+		config: config.stiff,
+		// onRest: () => set(!show),
+	})
+
+	return transitions(
+
+		(styles, item) => item &&
+
+			<animated.View style={styles}>
+				<Pressable style={ selectedStyle? {
+					overflow: "hidden",
+					height: 150,
+					width: mode === "single"? (WIDTH - 32) : (WIDTH - 52) /2,
+					margin: 8,
+					backgroundColor: "#ececec",
+					borderRadius: 10,
+					borderColor: "#ddd",
+					borderWidth: 2,
+					justifyContent: "space-between"
+				} : {
+					overflow: "hidden",
+					height: 150,
+					width: mode === "single"? (WIDTH - 32) : (WIDTH - 52) /2,
+					margin: 8,
+					backgroundColor: "#ececec",
+					borderRadius: 10,
+					borderColor: "#ddd",
+					borderWidth: 2,
+					justifyContent: "space-between"
+
+				}} onPress={()=>{
+					navigation.navigate("MoodWriting", {id : id ,title: title, content: content, createdAt: createdAt})
+
+				}} onLongPress={()=>{
+					console.log("LONGGGG!!!")
+					Vibration.vibrate(75)
+					setSelectedStyle(true)
+					SheetManager.show("today" , {targetId: id});
+				}}
+				>
+					<VStack>
+						<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
+
+						<View style={{ backgroundColor:"lightgray", height:1 }}/>
+					</VStack>
+
+					<VStack height={84} justifyContent="flex-start">
+						<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
+
+					</VStack>
+
+					<VStack width="100%" justifyContent="flex-end">
+						<View style={{ backgroundColor:"lightgray", height:1 }}/>
+
+						<HStack justifyContent="flex-end">
+							<VarText type="sm" content={"" + createdAt.year + "．" + createdAt.month + "．" + createdAt.day} marginLeft={10} margin={4} color="#b8b8b8" lineHeight={20}/>
+						</HStack>
+					</VStack>
+
+				</Pressable>
+			</animated.View>
 	)
 }
 
 const Today = ({navigation}) => {
 
+	const actionSheetRef = createRef()
+
 	const [state, dispatch] = useContext(AppContext)
+	const [refresh, setRefresh] = useState(0)
+
+	let ax = 0
 
 	useFocusEffect(
 		useCallback(() => {
+			setRefresh(prev => prev +1)
+			ax++
+			console.log(ax)
 		}, [])
 	);
 
@@ -51,40 +110,69 @@ const Today = ({navigation}) => {
 
 	const [actionSheetDeleteTarget, setActionSheetDeleteTarget] = useState("")
 
-	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode}/> )
+	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode} createdAt={item.createdAt}/> )
 
 
 	return(
 
-		<BaseContainer>
+		<BaseContainer flex={1}>
 
 			<ActionSheet
-				id="helloworld_sheet"
+				ref={actionSheetRef}
+				id="today"
 				overlayColor="transparent"
-				elevation={16}
+				elevation={0}
 				onBeforeShow={(target)=>{
-					setActionSheetDeleteTarget(target.target)
-					console.log(target.target)
+					setActionSheetDeleteTarget(target.targetId)
+					console.log(target.targetId)
 				}}
 				containerStyle={{
 					height: 160,
-					backgroundColor: "gray"
+					alignItems: "center",
+					backgroundColor: "transparent"
 				}}
 			>
-				<Container flex={1}>
-					<PressBox width="100%" height={48} backgroundColor="white"
-						onPress={()=> {
+				<View>
+					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor="#eaeaea" borderColor="#ccc" borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
+					          onPress={()=> {
 
-							const userNoteDataCopy = state.userNoteData
+						          //以刪除的note的id 進行搜尋index
+						          const userNoteDataCopy = state.userNoteData
+						          const target = userNoteDataCopy.note.findIndex(note => note.id === actionSheetDeleteTarget)
 
-							//將此筆資料儲存至該代理資料的[index]的位置
-							userNoteDataCopy.note.splice(actionSheetDeleteTarget, 1)
+						          //將此筆資料從該index刪除
+						          userNoteDataCopy.note.splice(target, 1)
 
-							//將改變後的代理資料儲存至全域變數
-							dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
-						}}
-					><VarText type={"sm"} content="DELETE"/></PressBox>
-				</Container>
+						          //將改變後的代理資料儲存至全域變數
+						          dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+						          actionSheetRef.current?.hide()
+					          }}
+					><VarText type={"sm"} content="DELETE" fontWeight={ "bold"} color="#666" letterSpacing={1}/></PressBox>
+					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor="#eaeaea" borderColor="#ccc" borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
+					          onPress={()=> {
+
+						          //以刪除的note的id 進行搜尋index
+						          const userNoteDataCopy = state.userNoteData
+						          const target = userNoteDataCopy.note.findIndex(note => note.id === actionSheetDeleteTarget)
+
+						          const duplicatedNote = {
+										 title:  userNoteDataCopy.note[target].title,
+										 content:  userNoteDataCopy.note[target].content,
+										 id: ""   + new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
+							          createdAt: userNoteDataCopy.note[target].createdAt
+						          }
+
+						          //將此筆資料從該index刪除
+						          userNoteDataCopy.note.splice(target, 0, duplicatedNote)
+
+						          console.log(userNoteDataCopy)
+
+						          //將改變後的代理資料儲存至全域變數
+						          dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+						          actionSheetRef.current?.hide()
+					          }}
+					><VarText type={"sm"} content="DUPLICATE" fontWeight={ "bold"} color="#666" letterSpacing={1}/></PressBox>
+				</View>
 			</ActionSheet>
 
 			<HStack width="100%" justifyContent="space-between" padding={16} paddingHorizontal={22} align>
@@ -95,21 +183,31 @@ const Today = ({navigation}) => {
 					</HStack>
 
 
-				<FeatherPenIcon color="gray" size={24} onPress={()=>{
+				<FeatherPenIcon color="gray" size={24} onPress={ async ()=>{
 
 					const userNoteDataCopy = state.userNoteData
 
 					const newNote = {
-						id: ""   +new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
+						id: ""   + new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
 						content: "" ,
-						title: ""
+						title: "",
+						createdAt: {
+							year: new Date().getFullYear() ,
+							month: (new Date().getMonth() +1),
+							day: new Date().getDate()
+						}
 					}
 
 					console.log(state.userNoteData)
 					console.log(userNoteDataCopy)
 					userNoteDataCopy.note.push(newNote)
 
-					navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content})
+					dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+
+					await new Promise(r => setTimeout(r, 500));
+
+					navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content, createdAt: newNote.createdAt})
+
 				}}/>
 
 			</HStack>
@@ -131,13 +229,12 @@ const Today = ({navigation}) => {
 			{/*	/>*/}
 			{/*</HStack>*/}
 
-			<Container>
+			<Container flex={1}>
 				{displayMode === "single"?
 					<FlatList
 						key={"_"}
 						contentContainerStyle={{
 							marginHorizontal: 10,
-							height: "80%",
 							justifyContent: "flex-start",
 						}}
 
@@ -151,12 +248,12 @@ const Today = ({navigation}) => {
 						key={"#"}
 						contentContainerStyle={{
 							marginHorizontal: 10,
-							height: "80%",
 							justifyContent: "flex-start",
 						}}
 
 						ScrollIndicator={false}
 						data={state.userNoteData.note}
+						extraData={ax}
 						numColumns={2}
 						renderItem={renderNotes}
 						keyExtractor={item => "#" + item.id}
@@ -164,7 +261,6 @@ const Today = ({navigation}) => {
 				}
 
 			</Container>
-
 		</BaseContainer>
 	)
 }

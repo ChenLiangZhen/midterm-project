@@ -1,5 +1,5 @@
 import {BaseContainer, HStack, PressBox, VStack} from "../../components/Layout";
-import {FlatList, Pressable, TextInput} from "react-native";
+import {FlatList, Keyboard, Pressable, TextInput} from "react-native";
 import {useCallback, useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
 import {NoteHeader} from "../../components/DefinedLayout";
@@ -13,23 +13,13 @@ import {saveNoteData} from "../../utility/asyncManager";
 
 const MoodWriting = ({navigation, route}) => {
 
-	const { id, title, content } = route.params
+	const { id, title, content, createdAt } = route.params
 
 	const [state, dispatch] = useContext(AppContext)
-
-	// const [dataOfThisNote, setDataOfThisNote] = useState({
-	// 	id: Number,
-	// 	title: String,
-	// 	content: String
-	// })
-	// const [userNoteDataCopy, setUserNoteDataCopy] = useState({})
 
 	const [noteTitle, setNoteTitle] = useState(title)
 	const [noteContent, setNoteContent] = useState(content)
 	const [showNoteOption, setShowNoteOption] = useState(false)
-
-	const [characterCount, setCharacterCount] = useState(0)
-	const [readingTime, setReadingTime] = useState(0)
 
 	const safeInset = useSafeAreaInsets()
 
@@ -47,25 +37,6 @@ const MoodWriting = ({navigation, route}) => {
 		config: config.slow
 	})
 
-	// useFocusEffect(
-	// 	useCallback(async () => {
-	//
-	// 		await setUserNoteDataCopy(state.userNoteData)
-	//
-	// 		dataOfThisNote.id = id
-	// 		dataOfThisNote.title = noteTitle
-	// 		dataOfThisNote.content = noteContent
-	//
-	// 		console.log(userNoteDataCopy)
-	// 		console.log(dataOfThisNote)
-	// 		userNoteDataCopy.note[id] = dataOfThisNote
-	//
-	// 		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
-	// 		console.log("FOCUSEFFECT!!!")
-	//
-	// 	}, [noteContent, noteTitle])
-	// );
-
 	useEffect(()=>{
 
 		console.log("reviewing ID = " + id)
@@ -78,17 +49,17 @@ const MoodWriting = ({navigation, route}) => {
 
 		//定義此note的儲存代理資料
 		const dataOfThisNote = {
-			id: String,
-			title: String,
-			content: String,
+			id: id,
+			title: noteTitle,
+			content: noteContent,
+			createdAt: {
+				year: createdAt.year,
+				month: createdAt.month,
+				day: createdAt.day
+			}
 		}
 
-		//設定此note的物件資料
-		dataOfThisNote.id = id
-		dataOfThisNote.title = noteTitle
-		dataOfThisNote.content = noteContent
-
-		console.log("This note: " + dataOfThisNote.id)
+		console.log("This note: " + dataOfThisNote)
 
 		//以當前作用的note，尋找其在代理儲存資料中的index
 		const target = userNoteDataCopy.note.findIndex(note => note.id === id)
@@ -106,7 +77,10 @@ const MoodWriting = ({navigation, route}) => {
 
 	return(
 		<BaseContainer>
-			<Pressable onPress={()=>setShowNoteOption(false)}>
+			<Pressable flex={1} onPress={()=> {
+				Keyboard.dismiss()
+				setShowNoteOption(false)
+			}}>
 				<NoteHeader navigation={navigation}
 				            onPressOption={()=> {
 					setShowNoteOption(true)}}
@@ -129,7 +103,6 @@ const MoodWriting = ({navigation, route}) => {
 					height: HEIGHT - safeInset.bottom - safeInset.top,
 					zIndex: 10,
 				}]}>
-
 					<animated.View style={[optionItemAnimation, {
 						justifyContent:"space-between",
 						height:"100%"

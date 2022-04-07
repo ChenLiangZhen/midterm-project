@@ -5,6 +5,16 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+
+    "ios": {
+      "bundleIdentifier": "com.ntue.moodnote",
+      "buildNumber": "1.0.0"
+    },
+
+    "android": {
+      "package": "com.ntue.moodnote",
+      "versionCode": 1
+    }
   }
 }
