@@ -1,9 +1,7 @@
 
-const Setting = () => {
+const Setting = () =>{
 	return(
-		<>
-
-		</>
+		<></>
 	)
 }
 

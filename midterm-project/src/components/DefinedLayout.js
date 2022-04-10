@@ -3,6 +3,7 @@ import {LeftArrowIcon, NoteOption} from "./IconButton";
 import {useState} from "react";
 import { config, animated, useSpring } from "@react-spring/native";
 import {HEIGHT, WIDTH} from "../utility/deviceUtility";
+import {Pressable} from "react-native";
 
 export function NoteHeader({navigation, onPressOption, onPressBack}){
 
@@ -31,5 +32,53 @@ export function NoteHeader({navigation, onPressOption, onPressBack}){
 
 
 		</HStack>
+	)
+}
+
+export function SettingItem({position, children, ...props}){
+
+	let styleObject = {}
+
+	switch(position){
+		case "top":
+			styleObject= {
+				borderTopColor: "#ddd",
+				borderTopRightRadius:16,
+				borderTopLeftRadius:16,
+				borderBottomWidth: 0}
+			break;
+		case "middle":
+			styleObject= { borderBottomWidth: 0}
+			break;
+
+		case "bottom":
+			styleObject= { borderBottomRightRadius:16,
+				borderBottomLeftRadius:16,
+				borderBottomColor: "#ddd",
+				marginBottom: 16}
+			break;
+
+	}
+
+
+
+	return(
+		<Pressable style={[{
+			height: 50,
+			width:"auto" ,
+			marginHorizontal:16,
+			padding:12,
+			paddingHorizontal: 16,
+			backgroundColor:"#f6f6f6",
+			flexDirection: "row",
+			borderWidth: 1,
+			borderColor: "#bbb",
+			borderLeftColor: "#ddd",
+			borderRightColor: "#ddd",
+			justifyContent: "space-between",
+			alignItems: "center"
+		}, styleObject, {...props}]}>
+			{children}
+		</Pressable>
 	)
 }

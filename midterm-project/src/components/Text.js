@@ -1,7 +1,7 @@
 import React from "react";
 import {Text} from "react-native";
 
-export function VarText({type, content, ...props}){
+export function VarText({type, content, children, ...props}){
 
 	let styleObj ={}
 
@@ -34,6 +34,7 @@ export function VarText({type, content, ...props}){
 		}
 		]}>
 			{content}
+			{children}
 		</Text>
 	)
 }

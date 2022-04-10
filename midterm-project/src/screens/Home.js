@@ -1,11 +1,12 @@
 import {FlatList, Pressable} from "react-native";
 import {BaseContainer, Container, HStack, PressBox} from "../components/Layout";
 import {LeftArrowIcon, RightArrowIcon} from "../components/IconButton";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {VarText} from "../components/Text";
 import {genCalendarObj} from "calendar-generator";
 import {animated, config, useTransition} from "@react-spring/native";
 import {WIDTH} from "../utility/deviceUtility";
+import HeartAnim from "../components/HeartAnim";
 
 function RenderItemDay({year, day, month, navigateDirection, navigation}) {
 
@@ -327,6 +328,7 @@ export const Home = ({navigation}) => {
 						/>
 						: <></>
 				}
+
 			</Container>
 			{/*const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode} createdAt={item.createdAt}/> )*/}
 

@@ -17,6 +17,8 @@ import MoodGalaxy from "./src/screens/forum/MoodGalaxy";
 import MyAccount from "./src/screens/me/MyAccount";
 import {AntDesign, Feather, Ionicons, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
 import {WIDTH} from "./src/utility/deviceUtility";
+import Splash from "./src/screens/Splash";
+import Setting from "./src/screens/me/Setting";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -108,6 +110,8 @@ function StackNavigator() {
 
 	return (
 		<Stack.Navigator initialRouteName="TabContent">
+			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
+			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
 			<Stack.Screen name="Today" component={Today} options={{headerShown: false}}/>
 			<Stack.Screen name="MoodWriting" component={MoodWriting} options={{headerShown: false}}/>

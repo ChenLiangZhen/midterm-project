@@ -9,6 +9,7 @@ import {ACTIONS} from "../../global_state/actions";
 import {useFocusEffect} from "@react-navigation/native";
 import ActionSheet, {SheetManager} from "react-native-actions-sheet";
 import {animated, config, useTransition} from "@react-spring/native";
+import HeartAnim from "../../components/HeartAnim";
 
 const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
 
@@ -173,9 +174,9 @@ const Today = ({navigation}) => {
 
 			<HStack width="100%" justifyContent="space-between" padding={16} paddingHorizontal={22} align>
 				<HStack align>
-					<VarText type="xl" content={date.year + " - "} color="#ccc"/>
-					<VarText type="xl" content={date.month + " - "} color="gray"/>
-					<VarText type="xl" content={date.day} color="gray"/>
+					<VarText type="xl" content={ " - "} color="#ccc"/>
+					<VarText type="xl" content={" - "} color="gray"/>
+					<VarText type="xl" content={"-"} color="gray"/>
 					</HStack>
 
 
@@ -257,6 +258,8 @@ const Today = ({navigation}) => {
 				}
 
 			</Container>
+
+			<HeartAnim opacity={1} size={200}/>
 		</BaseContainer>
 	)
 }
