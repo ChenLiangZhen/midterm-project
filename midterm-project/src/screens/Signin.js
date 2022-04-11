@@ -1,19 +1,25 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../components/Layout";
 import {StatusBar, Text, TextInput, View} from "react-native";
 import {TextStandard, VarText} from "../components/Text";
-import {RightArrowIcon} from "../components/IconButton";
+import {RightArrowIcon} from "../components/Icon";
 import {useFocusEffect} from "@react-navigation/native";
-import {useCallback, useContext, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {config,animated, useSpring} from "@react-spring/native";
 import {Key, Mail} from "../components/Icon";
 import MoodWriting from "./note/MoodWriting";
 import {AppContext} from "../global_state/AppStateProvider";
+import {LeftArrowIcon} from "../components/IconButton";
+import {HEIGHT} from "../utility/deviceUtility";
 
 const Signin = ({navigation}) => {
 
 	const [state, dispatch] = useContext(AppContext)
 
 	const [present, setPresent] = useState(false)
+
+	const [isAsync, setIsAsync] = useState(false)
+	const [showStatusView, setShowStatusView] = useState(false)
+	const [statusCode, setStatusCode] = useState("")
 	const [emailInput, setEmailInput] = useState("")
 	const [passwordInput, setPasswordInput] = useState("")
 
@@ -36,127 +42,152 @@ const Signin = ({navigation}) => {
 		config: config.slow
 	})
 
+	const statusView = useSpring({
+		opacity: showStatusView? 1: 0,
+		delay: 0,
+		bottom: showStatusView? 200: 0,
+		config: config.stiff,
+		onRest: ()=>{
+			setShowStatusView(false)
+		}
+	})
+
 	useFocusEffect(
 		useCallback(() => {
 			setPresent(true)
 		}, [])
 	);
 
+
 	return(
-		<BaseContainer justifyContent="center" alignItems="center">
+		<BaseContainer justifyContent="space-between" alignItems="center">
 			<StatusBar barStyle="dark-content"/>
 
-			<VStack marginBottom={32} width="100%" alignItems="flex-end">
-				<animated.View style={[signinTitle, {
-					width:"100%",
-					justifyContent:"flex-start",
-					paddingLeft:"10%",
-					marginBottom: 36,
-				}]}>
-					<HStack >
-						<VarText type="xl" content="登入 MoodDiary" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
-					</HStack>
-				</animated.View>
+			<animated.View style={[statusView, {
+				position: "absolute",
+				left: 20,
+			}]}>
+				<VarText type="md" content={statusCode}/>
+			</animated.View>
 
-				<animated.View style={[signinCard, {
-					height: 100,
-					width: "90%",
-					backgroundColor: state.appTheme.top_background_darken,
-					// borderWidth: 1,
-					borderRightWidth: 0,
-					// borderColor: "gray",
-					borderTopLeftRadius: 16,
-					borderBottomLeftRadius: 16,
-					paddingLeft: 14,
-					justifyContent: "space-evenly"
-				}]}>
+			<HStack align height={64} marginLeft={32} width={"100%"}>
+				<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={()=> navigation.goBack()}/>
+			</HStack>
 
-					<HStack align>
-						<Mail color={state.appTheme.text_lighter} size={20}/>
-						<TextInput
-							autoCapitalize="none"
-							textContentType="emailAddress"
-							placeholder="電子郵件"
-							placeholderTextColor={ state.appTheme.text_light}
-							value={emailInput}
-							onChangeText={(input)=> setEmailInput(input)}
-							selectionColor= {state.appTheme.text_light}
-							style={{
-								width: "100%",
-								borderRadius: 8,
-								// backgroundColor: "#ddd",
-								color: state.appTheme.text_lighter,
-								padding: 10,
-								fontSize: TextStandard.md,
+			<Container align height={HEIGHT * 0.65} width="100%" alignItems="flex-end">
+				<VStack width="100%" alignItems="flex-end">
+					<animated.View style={[signinTitle, {
+						width:"100%",
+						justifyContent:"flex-start",
+						paddingLeft:"10%",
+						marginBottom: 36,
+					}]}>
+						<HStack >
+							<VarText type="xl" content="登入 MoodDiary" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
+						</HStack>
+					</animated.View>
 
-							}}
-						/>
-					</HStack>
+					<animated.View style={[signinCard, {
+						height: 100,
+						width: "90%",
+						backgroundColor: state.appTheme.top_background_darken,
+						// borderWidth: 1,
+						borderRightWidth: 0,
+						// borderColor: "gray",
+						borderTopLeftRadius: 16,
+						borderBottomLeftRadius: 16,
+						paddingLeft: 14,
+						justifyContent: "space-evenly"
+					}]}>
 
-					<View style={{
-						height: 1,
-						backgroundColor: state.appTheme.text_light
-					}}/>
+						<HStack align>
+							<Mail color={state.appTheme.text_lighter} size={20}/>
+							<TextInput
+								autoCapitalize="none"
+								textContentType="emailAddress"
+								placeholder="電子郵件"
+								placeholderTextColor={ state.appTheme.text_light}
+								value={emailInput}
+								onChangeText={(input)=> setEmailInput(input)}
+								selectionColor= {state.appTheme.text_light}
+								style={{
+									width: "100%",
+									borderRadius: 8,
+									// backgroundColor: "#ddd",
+									color: state.appTheme.text_lighter,
+									padding: 10,
+									fontSize: TextStandard.md,
 
-					<HStack align>
-						<Key color={state.appTheme.text_lighter} size={20}/>
-						<TextInput
-							autoCapitalize="none"
-							textContentType="password"
-							secureTextEntry={true}
-							placeholder="密碼"
-							placeholderTextColor={ state.appTheme.text_light}
-							value={passwordInput}
-							onChangeText={(input)=> setPasswordInput(input)}
-							selectionColor= {state.appTheme.text_light}
-							style={{
-								width: "100%",
-								borderRadius: 8,
-								// backgroundColor: "#ddd",
-								color: state.appTheme.text_lighter,
-								padding: 10,
-								fontSize: TextStandard.md,
-							}}
-						/>
-					</HStack>
+								}}
+							/>
+						</HStack>
 
+						<View style={{
+							height: 1,
+							backgroundColor: state.appTheme.text_light
+						}}/>
 
-				</animated.View>
-
-				<animated.View style={[pressbox, { marginTop: 24, marginRight: 16, alignItems: "flex-end"}]}>
-					<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
-						setPresent(false)
-						navigation.navigate("Signup")
-					}}>
-						<VarText type="md" content="沒有帳號嗎？ 註冊" color={state.appTheme.text_light} marginRight={4}/>
-						<RightArrowIcon color={state.appTheme.text_light} size={20}/>
-					</PressBox>
-
-					<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
-						setPresent(false)
-						navigation.navigate("Signup")
-					}}>
-						<VarText type="md" content="忘記密碼？" color={state.appTheme.text_light} marginRight={4}/>
-						<RightArrowIcon color={state.appTheme.text_light} size={20}/>
-					</PressBox>
+						<HStack align>
+							<Key color={state.appTheme.text_lighter} size={20}/>
+							<TextInput
+								autoCapitalize="none"
+								textContentType="password"
+								secureTextEntry={true}
+								placeholder="密碼"
+								placeholderTextColor={ state.appTheme.text_light}
+								value={passwordInput}
+								onChangeText={(input)=> setPasswordInput(input)}
+								selectionColor= {state.appTheme.text_light}
+								style={{
+									width: "100%",
+									borderRadius: 8,
+									// backgroundColor: "#ddd",
+									color: state.appTheme.text_lighter,
+									padding: 10,
+									fontSize: TextStandard.md,
+								}}
+							/>
+						</HStack>
 
 
-					{/*登入程式碼*/}
-					{/*登入程式碼*/}
-					{/*登入程式碼*/}
-					{/*登入程式碼*/}
+					</animated.View>
 
-					<PressBox justifyContent={"flex-end"} padding={4} width={100} align onPress={()=> {
+					<animated.View style={[pressbox, { marginTop: 24, marginRight: 16, alignItems: "flex-end"}]}>
+						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
+							setPresent(false)
+							navigation.navigate("Signup")
+						}}>
+							<VarText type="md" content="沒有帳號嗎？ 註冊" color={state.appTheme.text_light} marginRight={4}/>
+							<RightArrowIcon color={state.appTheme.text_light} size={20}/>
+						</PressBox>
+
+						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
+							setPresent(false)
+							navigation.navigate("Signup")
+						}}>
+							<VarText type="md" content="忘記密碼？" color={state.appTheme.text_light} marginRight={4}/>
+							<RightArrowIcon color={state.appTheme.text_light} size={20}/>
+						</PressBox>
+
+
+						{/*登入程式碼*/}
+						{/*登入程式碼*/}
+						{/*登入程式碼*/}
+						{/*登入程式碼*/}
+
+						<PressBox justifyContent={"flex-end"} padding={4} width={100} align onPress={()=> {
 
 
 
-					}}>
-						<VarText type="md" content="登入" color={state.appTheme.selected_accent} fontWeight={"bold"} marginRight={4}/>
-						<RightArrowIcon color={state.appTheme.selected_accent} size={20}/>
-					</PressBox>
-				</animated.View>
+						}}>
+							<VarText type="md" content="登入" color={state.appTheme.selected_accent} fontWeight={"bold"} marginRight={4}/>
+							<RightArrowIcon color={state.appTheme.selected_accent} size={20}/>
+						</PressBox>
+					</animated.View>
 
-			</VStack>
+				</VStack>
+			</Container>
+
 		</BaseContainer>
 	)
 }

@@ -3,10 +3,43 @@ import {LeftArrowIcon, NoteOption} from "./IconButton";
 import {useContext, useState} from "react";
 import { config, animated, useSpring } from "@react-spring/native";
 import {HEIGHT, WIDTH} from "../utility/deviceUtility";
-import {Pressable} from "react-native";
+import {Pressable, View} from "react-native";
 import {AppContext} from "../global_state/AppStateProvider";
+import HeartAnim from "./HeartAnim";
 
 export function NoteHeader({navigation, onPressOption, onPressDisplayMode, onPressBack}){
+
+	const [state, dispatch] = useContext(AppContext)
+
+	const [showNoteOption, setShowNoteOption] = useState(false)
+	// const noteOptionAnimation = useSpring({
+	// 	backgroundColor: "red",
+	// 	opacity: showNoteOption? 1: 0,
+	// 	top: showNoteOption? 0: 0,
+	// 	config: config.default
+	// })
+
+	return(
+		<HStack align justifyContent="space-between" paddingVertical={4} paddingHorizontal={18}>
+			<LeftArrowIcon color="gray" size={30} onPress={onPressBack}/>
+			<NoteOption color="gray" size={28} onPress={onPressOption}/>
+
+			{/*{ showNoteOption?*/}
+			{/*	<animated.View style={[noteOptionAnimation, {*/}
+			{/*		backgroundColor: state.appTheme.top_background_darken,*/}
+			{/*		position: "absolute",*/}
+			{/*		width: WIDTH,*/}
+			{/*		height: HEIGHT / 5,*/}
+			{/*		zIndex: 10,*/}
+			{/*	}]}>*/}
+
+			{/*	</animated.View> : <></>}*/}
+
+		</HStack>
+	)
+}
+
+export function SignHeader({navigation, onPressOption, onPressDisplayMode, onPressBack}){
 
 	const [state, dispatch] = useContext(AppContext)
 
@@ -92,5 +125,25 @@ export function SettingItem({position, onPress, children, ...props}){
 		}, styleObject, {...props}]}>
 			{children}
 		</Pressable>
+	)
+}
+
+export function LoadingOverlay(){
+
+	const [state, dispatch]= useContext(AppContext)
+
+	return(
+		<View style={{
+			position: "absolute",
+			height: HEIGHT,
+			width: WIDTH,
+			justifyContent: "center",
+			alignItems: "center",
+			backgroundColor: state.appTheme.top_background_lighter,
+			opacity: 0.65,
+			zIndex: 1000
+		}}>
+			<HeartAnim opacity={1} size={200}/>
+		</View>
 	)
 }

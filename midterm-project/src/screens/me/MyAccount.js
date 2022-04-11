@@ -14,9 +14,9 @@ const MyAccount = ({navigation}) => {
 
 	const [state, dispatch] = useContext(AppContext)
 	const [cloudControlIndex, setCloudControlIndex] = useState(1)
-	const [floatTabControlIndex, setFloatTabControlIndex] = useState(1)
+	const [floatTabControlIndex, setFloatTabControlIndex] = useState(0)
 	const [backgroundControlIndex, setBackgroundControlIndex] = useState(1)
-	const [accessibilityControlIndex, setAccessibilityControlIndex] = useState(1)
+	const [accessibilityControlIndex, setAccessibilityControlIndex] = useState(0)
 
 	useEffect(()=>{
 		console.log(cloudControlIndex)
@@ -66,7 +66,7 @@ const MyAccount = ({navigation}) => {
 					<PressBox padding={8} backgroundColor= "transparent" borderRadius={12}
 					          width={96} borderColor={state.appTheme.selected_accent} borderWidth={2}
 					          onPress={() => {
-
+									 navigation.navigate("Signin")
 
 
 
@@ -133,7 +133,7 @@ const MyAccount = ({navigation}) => {
 								activeTabStyle={{
 									height:28,
 									width: 100,
-									backgroundColor: state.appTheme.selected_accent,
+									backgroundColor: state.appTheme.selected_accent_light,
 								}}
 								tabTextStyle={{
 									color: state.appTheme.text_lighter,
@@ -203,7 +203,7 @@ const MyAccount = ({navigation}) => {
 								activeTabStyle={{
 									height:28,
 									width: 100,
-									backgroundColor: state.appTheme.selected_accent,
+									backgroundColor: state.appTheme.selected_accent_light,
 
 								}}
 								tabTextStyle={{
@@ -237,7 +237,7 @@ const MyAccount = ({navigation}) => {
 								activeTabStyle={{
 									height:28,
 									width: 100,
-									backgroundColor: state.appTheme.selected_accent,
+									backgroundColor: state.appTheme.selected_accent_light,
 
 								}}
 								tabTextStyle={{
@@ -276,7 +276,7 @@ const MyAccount = ({navigation}) => {
 								activeTabStyle={{
 									height:28,
 									width: 100,
-									backgroundColor: state.appTheme.selected_accent,
+									backgroundColor: state.appTheme.selected_accent_light,
 
 								}}
 								tabTextStyle={{

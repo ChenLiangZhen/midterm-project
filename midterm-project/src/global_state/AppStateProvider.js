@@ -7,6 +7,7 @@ const initialAppState = {
 	testState: "this is state!!!",
 	appTheme: appTheme.warm_brown,
 	appThemeSelected: "warm_brown",
+	firstTimeUsing: true,
 	userSignedIn: false,
 	userNoteData: {},
 	userSetting: {

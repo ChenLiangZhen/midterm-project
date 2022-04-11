@@ -134,7 +134,7 @@ function StackNavigator() {
 	}, [])
 
 	return (
-		<Stack.Navigator initialRouteName="Signin">
+		<Stack.Navigator initialRouteName="Splash">
 			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
 			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>

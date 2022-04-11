@@ -26,3 +26,16 @@ export async function getNoteData(){
 		console.log("no data stored!")
 	}
 }
+
+export async function saveUserSetting(value){
+	await AsyncStorage.setItem("setting", value)
+}
+
+export async function getUserSetting(){
+	let result = await AsyncStorage.getItem("setting");
+	if (result) {
+		return result
+	} else {
+		console.log("no data stored!")
+	}
+}

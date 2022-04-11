@@ -43,6 +43,12 @@ const appReducer = (state, action) => {
 			userSetting: action.payload
 		}
 
+		case ACTIONS.SET_FIRST_TIME_USING:
+			return{
+				...state,
+				firstTimeUsing: action.payload
+			}
+
 	}};
 
 export default appReducer

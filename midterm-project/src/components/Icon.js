@@ -1,5 +1,37 @@
 import {AntDesign, Feather, Ionicons} from "@expo/vector-icons";
-import {View} from "react-native";
+import {Pressable, View} from "react-native";
+
+export function RightArrowIcon({color, size, onPress, ...props}){
+	return(
+		<View style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +8,
+			width: size +8,
+			...props
+		}}
+		           onPress={onPress}
+		>
+			<Feather name="chevron-right" color={color} size={size}/>
+		</View>
+	)
+}
+
+export function LeftArrowIcon({color, size, onPress, ...props}){
+	return(
+		<View style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +8,
+			width: size +8,
+			...props
+		}}
+		           onPress={onPress}
+		>
+			<Feather name="chevron-left" color={color} size={size}/>
+		</View>
+	)
+}
 
 export function Key({color, size, ...props}){
 	return(
