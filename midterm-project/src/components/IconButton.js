@@ -1,4 +1,4 @@
-import {Feather, FontAwesome} from "@expo/vector-icons";
+import {Feather, FontAwesome, MaterialCommunityIcons} from "@expo/vector-icons";
 import {Pressable} from "react-native";
 import {config, animated, useSpring} from "@react-spring/native";
 import {useState} from "react";
@@ -79,6 +79,54 @@ export function NoteOption({color, size, onPress, ...props}){
 			onPress={onPress}
 		>
 			<Feather name="more-horizontal" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function GridIcon({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<MaterialCommunityIcons name="view-grid-outline" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function StackIcon({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<MaterialCommunityIcons name="view-agenda-outline" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function Plus({color, size, onPress, ...props}){
+	return(
+		<Pressable style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +4,
+			width: size +4,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="plus" color={color} size={size}/>
 		</Pressable>
 	)
 }

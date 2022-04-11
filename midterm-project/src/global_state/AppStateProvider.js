@@ -5,9 +5,14 @@ import {appTheme} from "../utility/appTheme";
 
 const initialAppState = {
 	testState: "this is state!!!",
-	appTheme: appTheme.light,
+	appTheme: appTheme.warm_brown,
+	appThemeSelected: "warm_brown",
+	userSignedIn: false,
 	userNoteData: {},
-	userSetting: {}
+	userSetting: {
+		noteDisplayTwoColumn : false,
+		tabBarDisplayFloat: false,
+	}
 }
 
 const AppStateProvider = ({children}) =>{

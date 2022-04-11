@@ -1,5 +1,5 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
-import {FeatherPenIcon} from "../../components/IconButton";
+import {FeatherPenIcon, GridIcon, Plus, StackIcon} from "../../components/IconButton";
 import {FlatList, Pressable, Vibration, View} from "react-native";
 import {createRef, useCallback, useContext, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
@@ -11,8 +11,9 @@ import ActionSheet, {SheetManager} from "react-native-actions-sheet";
 import {animated, config, useTransition} from "@react-spring/native";
 import HeartAnim from "../../components/HeartAnim";
 
-const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
+const NoteItem = ({id, title, content, gridMode, createdAt, navigation}) => {
 
+	const [state, dispatch] = useContext(AppContext)
 	const [selectedStyle, setSelectedStyle] = useState(false)
 
 	const transitions = useTransition(true, {
@@ -33,7 +34,7 @@ const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
 				<Pressable style={ selectedStyle? {
 					overflow: "hidden",
 					height: 150,
-					width: mode === "single"? (WIDTH - 32) : (WIDTH - 52) /2,
+					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
 					backgroundColor: "#ececec",
 					borderRadius: 10,
@@ -43,7 +44,7 @@ const NoteItem = ({id, title, content, mode, createdAt, navigation}) => {
 				} : {
 					overflow: "hidden",
 					height: 150,
-					width: mode === "single"? (WIDTH - 32) : (WIDTH - 52) /2,
+					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
 					backgroundColor: "#ececec",
 					borderRadius: 10,
@@ -91,6 +92,7 @@ const Today = ({navigation}) => {
 
 	const [state, dispatch] = useContext(AppContext)
 	const [refresh, setRefresh] = useState(0)
+	const [displayGrid, setDisplayGrid] = useState(false)
 
 	let ax = 0
 
@@ -103,11 +105,10 @@ const Today = ({navigation}) => {
 	);
 
 	const [searchData, setSearchData] = useState("")
-	const [displayMode, setDisplayMode] = useState("sd")
 
 	const [actionSheetDeleteTarget, setActionSheetDeleteTarget] = useState("")
 
-	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode} createdAt={item.createdAt}/> )
+	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} gridMode={displayGrid} createdAt={item.createdAt}/> )
 
 
 	return(
@@ -180,32 +181,43 @@ const Today = ({navigation}) => {
 					</HStack>
 
 
-				<FeatherPenIcon color="gray" size={24} onPress={ async ()=>{
+				<HStack width={200} align justifyContent="flex-end">
+					{displayGrid?
+						<GridIcon color="black" size={24}
+						          onPress={() => setDisplayGrid(false)}
+						/> :
 
-					const userNoteDataCopy = state.userNoteData
+						<StackIcon color="black" size={24}
+						           onPress={()=> setDisplayGrid(true)}
+						/>}
+					<Plus marginLeft={12} color= {state.appTheme.selected_accent} size={26} onPress={ async ()=>{
 
-					const newNote = {
-						id: ""   + new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
-						content: "" ,
-						title: "",
-						createdAt: {
-							year: new Date().getFullYear() ,
-							month: (new Date().getMonth() +1),
-							day: new Date().getDate()
+						const userNoteDataCopy = state.userNoteData
+
+						const newNote = {
+							id: ""   + new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
+							content: "" ,
+							title: "",
+							createdAt: {
+								year: new Date().getFullYear() ,
+								month: (new Date().getMonth() +1),
+								day: new Date().getDate()
+							}
 						}
-					}
 
-					console.log(state.userNoteData)
-					console.log(userNoteDataCopy)
-					userNoteDataCopy.note.push(newNote)
+						console.log(state.userNoteData)
+						console.log(userNoteDataCopy)
+						userNoteDataCopy.note.push(newNote)
 
-					dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
+						dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
 
-					await new Promise(r => setTimeout(r, 500));
+						await new Promise(r => setTimeout(r, 500));
 
-					navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content, createdAt: newNote.createdAt})
+						navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content, createdAt: newNote.createdAt})
 
-				}}/>
+					}}/>
+				</HStack>
+
 
 			</HStack>
 			{/*<HStack width="100%" justifyContent="space-between" paddingHorizontal={16} marginBottom={8} align>*/}
@@ -227,7 +239,7 @@ const Today = ({navigation}) => {
 			{/*</HStack>*/}
 
 			<Container flex={1}>
-				{displayMode === "single"?
+				{!displayGrid ?
 					<FlatList
 						key={"_"}
 						contentContainerStyle={{
@@ -250,7 +262,6 @@ const Today = ({navigation}) => {
 
 						ScrollIndicator={false}
 						data={state.userNoteData.note}
-						extraData={ax}
 						numColumns={2}
 						renderItem={renderNotes}
 						keyExtractor={item => "#" + item.id}

@@ -1,10 +1,11 @@
+import 'react-native-gesture-handler'
 import React, {useContext, useEffect} from 'react';
 import AppStateProvider, {AppContext} from "./src/global_state/AppStateProvider";
 import {ACTIONS} from "./src/global_state/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Welcome from "./src/screens/Welcome";
-import {NavigationContainer} from "@react-navigation/native";
+import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
 import Signin from "./src/screens/Signin";
 import Signup from "./src/screens/Signup";
 import Today from "./src/screens/note/Today";
@@ -15,13 +16,16 @@ import {Home} from "./src/screens/Home";
 import MoodSupport from "./src/screens/forum/MoodSupport";
 import MoodGalaxy from "./src/screens/forum/MoodGalaxy";
 import MyAccount from "./src/screens/me/MyAccount";
-import {AntDesign, Feather, Ionicons, MaterialCommunityIcons, MaterialIcons} from "@expo/vector-icons";
+import {Feather, Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {WIDTH} from "./src/utility/deviceUtility";
 import Splash from "./src/screens/Splash";
 import Setting from "./src/screens/me/Setting";
+import {Platform} from "react-native";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
+
+
 
 const TEST_DATA = {
 	note: [
@@ -78,19 +82,40 @@ const TEST_DATA = {
 	]
 }
 
-export default function App() {
+export default function App(){
+	return(
+
+		<AppStateProvider>
+			<Base/>
+		</AppStateProvider>
+	)
+}
+
+const theme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		background: "black"
+	},
+};
+
+function Base() {
+
+	const [state, dispatch] = useContext(AppContext)
+
+	useEffect(()=>{
+		theme.colors.background = state.appTheme.base_background
+	}, [])
 
 	return (
 
-		<AppStateProvider>
 			<SafeAreaProvider>
-				<NavigationContainer>
+				<NavigationContainer theme={theme}>
 
 					<StackNavigator/>
 
 				</NavigationContainer>
 			</SafeAreaProvider>
-		</AppStateProvider>
 
 	);
 }
@@ -109,7 +134,7 @@ function StackNavigator() {
 	}, [])
 
 	return (
-		<Stack.Navigator initialRouteName="TabContent">
+		<Stack.Navigator initialRouteName="Signin">
 			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
 			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
@@ -123,12 +148,15 @@ function StackNavigator() {
 }
 
 function TabNavigator() {
+
+	const [state, dispatch] = useContext(AppContext)
+
 	return (
 		<Tab.Navigator
 			initialRouteName="Home"
 			screenOptions={({route}) => ({
 				tabBarIcon: ({focused, color, size}) => {
-					if (route.name === 'Home') {
+					if (route.name === '首頁') {
 						return (
 							<Feather
 								name={
@@ -141,7 +169,7 @@ function TabNavigator() {
 							/>
 						);
 					}
-					if (route.name === 'MoodSupport') {
+					if (route.name === '心靈雞湯') {
 						return (
 							<Feather
 								name={focused ? 'coffee' : 'coffee'}
@@ -150,7 +178,7 @@ function TabNavigator() {
 							/>
 						);
 					}
-					if (route.name === 'MoodGalaxy') {
+					if (route.name === '心靈星球') {
 						return (
 							<Ionicons
 								name={focused ? 'planet' : 'planet-outline'}
@@ -159,7 +187,7 @@ function TabNavigator() {
 							/>
 						);
 					}
-					if (route.name === 'MyAccount') {
+					if (route.name === '我的帳號') {
 						return (
 							<MaterialIcons
 								name={focused ? 'face' : 'face'}
@@ -169,30 +197,60 @@ function TabNavigator() {
 						);
 					}
 				},
-				tabBarLabelStyle: {fontSize: 14,},
-				tabBarStyle: {
-					height: 52,
-					width: WIDTH * 0.9,
-					marginLeft: WIDTH * 0.05,
-					borderTopWidth: 0,
-					bottom: 30,
-					elevation: 0,
-					borderRadius: 64,
-					paddingHorizontal: 8
-				},
-				tabBarItemStyle: {
+				tabBarLabelStyle: {fontSize: 13,},
+
+				tabBarStyle: state.userSetting.tabBarDisplayFloat?
+					{
+						backgroundColor: state.appTheme.top_background_weak,
+						borderColor: state.appTheme.top_background_darken,
+						height: 52,
+						width: WIDTH * 0.9,
+						marginLeft: WIDTH * 0.05,
+						borderTopWidth: 0,
+						bottom: 30,
+						elevation: 0,
+						opacity: 1,
+						borderRadius: 64,
+						paddingHorizontal: 8,
+					} :
+					{
+						backgroundColor: state.appTheme.top_background_weak,
+						borderTopColor: state.appTheme.top_background_darken,
+						borderTopWidth: 1,
+						opacity: 1,
+						height: Platform.OS === "ios" ? 78:64,
+						paddingTop: 4,
+						elevation: 0,
+
+						paddingHorizontal: 16,
+					},
+
+				tabBarItemStyle: state.userSetting.tabBarDisplayFloat? {
+
 					paddingVertical: 8,
 					height: 48
+				} : {
+					paddingBottom: 12,
+					height: 60
 				},
-				tabBarShowLabel: false,
-				tabBarInactiveTintColor: '#ddd',
-				tabBarActiveTintColor: '#333333',
+
+				tabBarBadgeStyle: {
+					color: state.appTheme.base_background,
+					backgroundColor:  state.appTheme.tab_active_accent,
+					borderWidth: 2,
+					borderColor:  state.appTheme.top_background,
+				},
+
+				tabBarShowLabel: !state.userSetting.tabBarDisplayFloat,
+				tabBarInactiveTintColor: state.appTheme.tab_inactive,
+				tabBarActiveTintColor: state.appTheme.tab_active,
 			})}
 		>
-			<Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
-			<Tab.Screen name="MoodSupport" component={MoodSupport} options={{headerShown: false}}/>
-			<Tab.Screen name="MoodGalaxy" component={MoodGalaxy} options={{tabBarBadge: 99, headerShown: false}}/>
-			<Tab.Screen name="MyAccount" component={MyAccount} options={{headerShown: false}}/>
+
+			<Tab.Screen name="首頁" component={Home} options={{headerShown: false}}/>
+			<Tab.Screen name="心靈雞湯" component={MoodSupport} options={{headerShown: false}}/>
+			<Tab.Screen name="心靈星球" component={MoodGalaxy} options={{tabBarBadge: 99, headerShown: false}}/>
+			<Tab.Screen name="我的帳號" component={MyAccount} options={{headerShown: false}}/>
 		</Tab.Navigator>
 	)
 }

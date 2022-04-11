@@ -1,14 +1,17 @@
-import {FlatList, Pressable} from "react-native";
+import {FlatList, Platform, Pressable, StatusBar} from "react-native";
 import {BaseContainer, Container, HStack, PressBox} from "../components/Layout";
 import {LeftArrowIcon, RightArrowIcon} from "../components/IconButton";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {VarText} from "../components/Text";
 import {genCalendarObj} from "calendar-generator";
 import {animated, config, useTransition} from "@react-spring/native";
 import {WIDTH} from "../utility/deviceUtility";
 import HeartAnim from "../components/HeartAnim";
+import {AppContext} from "../global_state/AppStateProvider";
 
 function RenderItemDay({year, day, month, navigateDirection, navigation}) {
+
+	const [state, dispatch] = useContext(AppContext)
 
 	const transitions = useTransition(true,
 
@@ -54,8 +57,7 @@ function RenderItemDay({year, day, month, navigateDirection, navigation}) {
 							justifyContent: "center",
 							alignItems: "center",
 							borderRadius: 100,
-							borderColor: "black",
-							borderWidth: 1
+							backgroundColor: state.appTheme.accent1,
 						}:
 						day > 0 ? {
 						padding: 10,
@@ -69,14 +71,14 @@ function RenderItemDay({year, day, month, navigateDirection, navigation}) {
 						height: 14,
 						justifyContent: "center",
 						alignItems: "center",
-						backgroundColor: "whitesmoke",
+						backgroundColor: state.appTheme.top_background_darken,
 							borderRadius:20,
 					}
 			}
 
 			>{day === (new Date().getDate()) && month === (new Date().getMonth() + 1) && year === (new Date().getFullYear())?
-				<VarText type="md" content={day > 0 ? day : "-"} fontWeight="bold"/> :
-				<VarText type="md" content={day > 0 ? day : "-"} color={day > 0 ? "dimgray" : "transparent"}/>
+				<VarText type="md" content={day > 0 ? day : "-"} fontWeight="bold" color={state.appTheme.base_background}/> :
+				<VarText type="md" content={day > 0 ? day : "-"} color={day > 0 ? state.appTheme.text : "transparent"}/>
 			}
 			</Pressable>
 		</animated.View>
@@ -84,6 +86,8 @@ function RenderItemDay({year, day, month, navigateDirection, navigation}) {
 }
 
 export const Home = ({navigation}) => {
+
+	const [state, dispatch] = useContext(AppContext)
 
 	const [calYear, setCalYear] = useState(new Date().getFullYear())
 	const [calMonth, setCalMonth] = useState(new Date().getMonth() + 1)
@@ -128,12 +132,13 @@ export const Home = ({navigation}) => {
 				style={{
 					width: Math.round(WIDTH * 0.85 / 7) + 1,
 					height: 40,
+					color: state.appTheme.text_lighter,
 					justifyContent: "center",
 					alignItems: "center",
 					borderRadius: 50,
 				}}
 			>
-				<VarText type="sm" content={day}/>
+				<VarText type="sm" content={day} color={state.appTheme.text_light}/>
 			</Pressable>
 		)
 	}
@@ -219,7 +224,7 @@ export const Home = ({navigation}) => {
 
 
 	return (
-		<BaseContainer marginTop={12} width="100%" height="100%">
+		<BaseContainer marginTop={Platform.OS === "ios"? 12 : 12} width="100%" height="100%">
 
 			{/*{ show &&*/}
 			{/*	<DateTimePicker testID="dateTimePicker"*/}
@@ -232,7 +237,6 @@ export const Home = ({navigation}) => {
 			{/*		                height: 100,*/}
 			{/*	                }}*/}
 			{/*	/>}*/}
-
 			<Container width="100%" justify align>
 
 			<HStack justifyContent="space-between" marginBottom={12} width="80%">
@@ -249,23 +253,22 @@ export const Home = ({navigation}) => {
 					} else {
 						setCalYear(prev => prev -1)
 					}
-
-				}} color="#000"/>
+				}} color={state.appTheme.text_lighter}/>
 
 
 
 				<HStack align>
-					<PressBox onPress={() => {
+					<PressBox padding={4} onPress={() => {
 						setNavigateMonth(false)
 					}}>
-						<VarText type="lg" content={calYear} fontWeight={navigateMonth === true? "normal" : "bold"}/>
+						<VarText type="xl" content={calYear} fontWeight={navigateMonth? "normal" : "bold"} color={navigateMonth ? state.appTheme.text_lighter: state.appTheme.selected_accent }/>
 					</PressBox>
-					<VarText type="lg" content="  -  "/>
+					<VarText type="xl" content="  -  " color={state.appTheme.text}/>
 
-					<PressBox onPress={() => {
+					<PressBox padding={4} onPress={() => {
 						setNavigateMonth(true)
 					}}>
-						<VarText type="lg" content={calMonth} fontWeight={navigateMonth === true? "bold": "normal"}/>
+						<VarText type="xl" content={calMonth} fontWeight={navigateMonth ? "bold": "normal"} color={navigateMonth ? state.appTheme.selected_accent : state.appTheme.text_lighter}/>
 					</PressBox>
 				</HStack>
 
@@ -285,8 +288,8 @@ export const Home = ({navigation}) => {
 					} else {
 						setCalYear(prev => prev +1)
 					}
+				}} color={state.appTheme.text_lighter}/>
 
-				}} color="#000"/>
 			</HStack>
 
 			<HStack backgroundColor="transparent" marginBottom={2} width={WIDTH * 0.9} align justify>
@@ -309,7 +312,7 @@ export const Home = ({navigation}) => {
 							contentContainerStyle={{
 								height: 300,
 								width: WIDTH * 0.9,
-								backgroundColor: "#fff",
+								backgroundColor: state.appTheme.top_background_weak,
 								justifyContent: "center",
 								alignItems: "center",
 

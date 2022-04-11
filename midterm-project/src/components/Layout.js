@@ -1,44 +1,77 @@
-import {KeyboardAvoidingView, Platform, Pressable, StatusBar, View} from "react-native";
+import {ImageBackground, KeyboardAvoidingView, Platform, Pressable, StatusBar, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {useContext, useState} from "react";
+import {AppContext} from "../global_state/AppStateProvider";
 
 export function BaseContainer({children, onTouchStart, type, ...props}){
+
+	const [state, dispatch] = useContext(AppContext)
+
+	const [passwordInput, setPasswordInput] = useState("")
+	const [emailInput, setEmailInput] = useState("")
+	const [userData, setUserData] = useState("")
+
+	const [authStatus, setAuthStatus] = useState("N/A")
+	const [token, setToken] = useState({})
+
 	return(
 		type === "tab"?
-			<SafeAreaView style={{
-				height: "100%",
-				width: "100%",
-				flex: 1,
-			}} edges={['top','right', 'bottom', 'left']}>
-				<KeyboardAvoidingView
-					behavior={Platform.OS === "ios" ? "padding": "height"}
-					style={{
-						flex: 1,
-					...props}}>
+				<SafeAreaView style={{
+					backgroundColor: state.appTheme.base_background,
+					height: "100%",
+					width: "100%",
+					flex: 1,
+				}} edges={['top', 'right', 'left']}>
+					<ImageBackground source={state.appThemeSelected === "classic_light"? {} : require("../resource/bigcookie.png")}
+					                 style={{
+						                 flex: 1,
+						                 justifyContent: "center",
+					                 }}
+					                 resizeMode={"cover"}>
+						<KeyboardAvoidingView
+							behavior={Platform.OS === "ios" ? "padding": "height"}
+							style={{
+								flex: 1,
+								...props}}>
 
-					<StatusBar barStyle="dark-content" backgroundColor="white"/>
+							<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
 
-					{children}
-				</KeyboardAvoidingView>
-			</SafeAreaView>
+
+							{children}
+						</KeyboardAvoidingView>
+
+					</ImageBackground>
+
+				</SafeAreaView>
+
 			:
 			<SafeAreaView style={{
+				backgroundColor: state.appTheme.base_background,
+
 				height: "100%",
 				width: "100%",
 				flex: 1,
 
 			}} edges={['top','right', 'bottom', 'left']} >
-				<KeyboardAvoidingView
-					behavior={Platform.OS === "ios" ? "padding": "height"}
-					style={{
-						flex: 1,
+				<ImageBackground source={state.appThemeSelected === "classic_light"? {} : require("../resource/bigcookie.png")}
+				                 style={{
+										  flex: 1,
+					                 justifyContent: "center",
+				                 }}
+				                 resizeMode={"cover"}>
+					<KeyboardAvoidingView
+						behavior={Platform.OS === "ios" ? "padding": "height"}
+						style={{
+							flex: 1,
+							backgroundColor: "transparent",
+							...props}}>
 
-						...props}}>
-
-					<StatusBar barStyle="dark-content" backgroundColor="white"/>
+						<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
 
 
-					{children}
-				</KeyboardAvoidingView>
+						{children}
+					</KeyboardAvoidingView>
+				</ImageBackground>
 			</SafeAreaView>
 	)
 }
