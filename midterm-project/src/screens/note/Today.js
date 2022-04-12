@@ -1,7 +1,7 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
 import {
-	FeatherPenIcon,
-	GridIcon, NoteAngryIcon,
+	GridIcon,
+	NoteAngryIcon,
 	NoteHappyIcon,
 	NoteSadIcon,
 	NoteSosoIcon,
@@ -17,7 +17,19 @@ import {ACTIONS} from "../../global_state/actions";
 import {useFocusEffect} from "@react-navigation/native";
 import ActionSheet, {SheetManager} from "react-native-actions-sheet";
 import {animated, config, useTransition} from "@react-spring/native";
-import HeartAnim from "../../components/HeartAnim";
+
+const NoteMood = ({moodDisplay}) => {
+	switch (moodDisplay){
+		case 1:
+			return <NoteHappyIcon size={70} active={true}/>
+		case 2:
+			return <NoteSosoIcon size={70} active={true}/>
+		case 3:
+			return <NoteSadIcon size={70} active={true}/>
+		case 4:
+			return <NoteAngryIcon size={70} active={true}/>
+	}
+}
 
 const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation}) => {
 
@@ -92,7 +104,8 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					justifyContent: "space-between"
 
 				}} onPress={()=>{
-					navigation.navigate("MoodWriting", {id : id ,title: title, content: content, createdAt: createdAt})
+					console.log(noteMood)
+					navigation.navigate("MoodWriting", {id : id ,title: title, content: content, createdAt: createdAt, noteMood: noteMood})
 
 				}} onLongPress={()=>{
 					console.log("LONGGGG!!!")
@@ -105,7 +118,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					<HStack>
 						{(!gridMode)?
 							<Container align justify height={100} width={80}>
-								<NoteHappyIcon size={70} active={true}/>
+								<NoteMood moodDisplay={noteMood}/>
 							</Container>
 							: <></>}
 
@@ -137,11 +150,14 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 
 const Today = ({navigation}) => {
 
+
 	const actionSheetRef = createRef()
 
 	const [state, dispatch] = useContext(AppContext)
 	const [refresh, setRefresh] = useState(0)
 	const [displayGrid, setDisplayGrid] = useState(false)
+
+
 
 	let ax = 0
 
@@ -157,8 +173,7 @@ const Today = ({navigation}) => {
 
 	const [actionSheetDeleteTarget, setActionSheetDeleteTarget] = useState("")
 
-	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} gridMode={displayGrid} createdAt={item.createdAt} nodeMood={item.noteMood}/> )
-
+	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} gridMode={displayGrid} createdAt={item.createdAt} noteMood={item.noteMood}/> )
 
 	return(
 
@@ -252,7 +267,8 @@ const Today = ({navigation}) => {
 								year: new Date().getFullYear() ,
 								month: (new Date().getMonth() +1),
 								day: new Date().getDate()
-							}
+							},
+							noteMood: 1
 						}
 
 						console.log(state.userNoteData)
@@ -263,7 +279,7 @@ const Today = ({navigation}) => {
 
 						await new Promise(r => setTimeout(r, 500));
 
-						navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content, createdAt: newNote.createdAt})
+						navigation.navigate("MoodWriting", { id: newNote.id, title: newNote.title, content: newNote.content, createdAt: newNote.createdAt, noteMood: newNote.noteMood})
 
 					}}/>
 				</HStack>

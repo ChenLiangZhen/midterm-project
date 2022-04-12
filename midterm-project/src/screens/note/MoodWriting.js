@@ -13,7 +13,7 @@ import {NoteAngryIcon, NoteHappyIcon, NoteSadIcon, NoteSosoIcon} from "../../com
 
 const MoodWriting = ({navigation, route}) => {
 
-	const { id, title, content, createdAt } = route.params
+	const { id, title, content, createdAt, noteMood } = route.params
 
 	const [state, dispatch] = useContext(AppContext)
 
@@ -21,7 +21,7 @@ const MoodWriting = ({navigation, route}) => {
 	const [noteContent, setNoteContent] = useState(content)
 	const [showNoteOption, setShowNoteOption] = useState(false)
 
-	const [activeMoodIcon, setActiveMoodIcon] = useState(1)
+	const [activeMoodIcon, setActiveMoodIcon] = useState(noteMood)
 
 	const safeInset = useSafeAreaInsets()
 
@@ -41,8 +41,6 @@ const MoodWriting = ({navigation, route}) => {
 
 	useEffect(()=>{
 
-		console.log("reviewing ID = " + id)
-
 		//慘痛教訓：千萬不要在其他地方亂宣告變數，並且謹記使用 const 宣告物件，
 		//        才不會出現詭異的參照問題。
 
@@ -58,11 +56,9 @@ const MoodWriting = ({navigation, route}) => {
 				year: createdAt.year,
 				month: createdAt.month,
 				day: createdAt.day
-			}
+			},
+			noteMood: activeMoodIcon
 		}
-
-		console.log("This note: " + dataOfThisNote)
-
 		//以當前作用的note，尋找其在代理儲存資料中的index
 		const target = userNoteDataCopy.note.findIndex(note => note.id === id)
 		console.log(dataOfThisNote)
@@ -75,7 +71,7 @@ const MoodWriting = ({navigation, route}) => {
 		//將改變後的代理資料儲存至全域變數
 		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
 
-	}, [noteContent, noteTitle])
+	}, [noteContent, noteTitle, activeMoodIcon])
 
 	return(
 		<BaseContainer>
