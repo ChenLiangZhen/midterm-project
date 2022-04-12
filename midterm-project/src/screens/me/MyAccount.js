@@ -181,7 +181,7 @@ const MyAccount = ({navigation}) => {
 					        height: 2,
 				        }}>
 
-					<SettingItem position="top">
+					<SettingItem position="top" onPress={()=> navigation.navigate("ChooseTheme")}>
 						<VarText type="sm" color={state.appTheme.text_lighter} letterSpacing={.5}>色彩主題</VarText>
 						<RightArrowIcon size={14}/>
 					</SettingItem>

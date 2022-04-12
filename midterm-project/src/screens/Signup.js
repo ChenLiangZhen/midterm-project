@@ -14,7 +14,7 @@ import {signManager} from "../../api/axiosManager";
 import {HEIGHT, WIDTH} from "../utility/deviceUtility";
 import {ACTIONS} from "../global_state/actions";
 import {LoadingOverlay} from "../components/DefinedLayout";
-import {LeftArrowIcon} from "../components/IconButton";
+import {LeftArrowIcon, NoteHappyIcon} from "../components/IconButton";
 
 const Signup = ({navigation}) => {
 
@@ -272,6 +272,7 @@ const Signup = ({navigation}) => {
 					</animated.View>
 
 				</VStack>
+
 			</Container>
 
 		</BaseContainer>

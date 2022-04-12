@@ -1,5 +1,5 @@
 import {Feather, FontAwesome, MaterialCommunityIcons} from "@expo/vector-icons";
-import {Pressable} from "react-native";
+import {Image, Pressable} from "react-native";
 import {config, animated, useSpring} from "@react-spring/native";
 import {useState} from "react";
 
@@ -127,6 +127,106 @@ export function Plus({color, size, onPress, ...props}){
 			onPress={onPress}
 		>
 			<Feather name="plus" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+export function NoteHappyIcon({size, onPress, active, ...props}){
+	return(
+		<Pressable style={
+			active?
+			{
+				justifyContent: "center",
+				alignItems: "center",
+				height: size +4,
+				width: size +4,
+				...props
+			}: {
+				justifyContent: "center",
+				alignItems: "center",
+				height: size +4,
+				width: size +4,
+				opacity: 0.25,
+				...props
+			}}
+			onPress={onPress}
+		>
+			<Image style={{ width: size, height: size }} source={require("../resource/emoji_smile.png")}/>
+		</Pressable>
+	)
+}
+
+export function NoteSosoIcon({size, onPress, active, ...props}){
+	return(
+		<Pressable style={
+			active?
+				{
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					...props
+				}: {
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					opacity: 0.25,
+					...props
+				}}
+		           onPress={onPress}
+		>
+			<Image style={{ width: size, height: size }} source={require("../resource/emoji_neutral.png")}/>
+		</Pressable>
+	)
+}
+
+export function NoteSadIcon({size, onPress, active, ...props}){
+	return(
+		<Pressable style={
+			active?
+				{
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					...props
+				}: {
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					opacity: 0.25,
+					...props
+				}}
+		           onPress={onPress}
+		>
+			<Image style={{ width: size, height: size }} source={require("../resource/emoji_sad.png")}/>
+		</Pressable>
+	)
+}
+
+export function NoteAngryIcon({size, onPress, active, ...props}){
+	return(
+		<Pressable style={
+			active?
+				{
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					...props
+				}: {
+					justifyContent: "center",
+					alignItems: "center",
+					height: size +4,
+					width: size +4,
+					opacity: 0.25,
+					...props
+				}}
+		           onPress={onPress}
+		>
+			<Image style={{ width: size, height: size }} source={require("../resource/emoji_angry.png")}/>
 		</Pressable>
 	)
 }

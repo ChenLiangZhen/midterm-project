@@ -21,6 +21,7 @@ import {WIDTH} from "./src/utility/deviceUtility";
 import Splash from "./src/screens/Splash";
 import Setting from "./src/screens/me/Setting";
 import {Platform} from "react-native";
+import ChooseTheme from "./src/screens/ChooseTheme";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -37,7 +38,8 @@ const TEST_DATA = {
 				year: 2022,
 				month: 4,
 				day: 4
-			}
+			},
+			noteMood: 1
 		},
 		{
 			id: "1",
@@ -47,7 +49,8 @@ const TEST_DATA = {
 				year: 2022,
 				month: 4,
 				day: 5
-			}
+			},
+			noteMood: 1
 		},
 		{
 			id: "2",
@@ -57,7 +60,8 @@ const TEST_DATA = {
 				year: 2022,
 				month: 4,
 				day: 5
-			}
+			},
+			noteMood: 3
 		},
 		{
 			id: "3",
@@ -67,7 +71,8 @@ const TEST_DATA = {
 				year: 2022,
 				month: 4,
 				day: 5
-			}
+			},
+			noteMood: 2
 		},
 		{
 			id: "4",
@@ -77,7 +82,8 @@ const TEST_DATA = {
 				year: 2022,
 				month: 4,
 				day: 6
-			}
+			},
+			noteMood: 4
 		}
 	]
 }
@@ -134,7 +140,7 @@ function StackNavigator() {
 	}, [])
 
 	return (
-		<Stack.Navigator initialRouteName="Splash">
+		<Stack.Navigator initialRouteName="Today">
 			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
 			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
@@ -142,6 +148,7 @@ function StackNavigator() {
 			<Stack.Screen name="MoodWriting" component={MoodWriting} options={{headerShown: false}}/>
 			<Stack.Screen name="Signin" component={Signin} options={{headerShown: false}}/>
 			<Stack.Screen name="Signup" component={Signup} options={{headerShown: false}}/>
+			<Stack.Screen name="ChooseTheme" component={ChooseTheme} options={{headerShown: false}}/>
 			<Stack.Screen name="TabContent" component={TabNavigator} options={{headerShown: false}}/>
 		</Stack.Navigator>
 	)

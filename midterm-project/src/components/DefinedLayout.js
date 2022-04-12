@@ -21,8 +21,8 @@ export function NoteHeader({navigation, onPressOption, onPressDisplayMode, onPre
 
 	return(
 		<HStack align justifyContent="space-between" paddingVertical={4} paddingHorizontal={18}>
-			<LeftArrowIcon color="gray" size={30} onPress={onPressBack}/>
-			<NoteOption color="gray" size={28} onPress={onPressOption}/>
+			<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={onPressBack}/>
+			<NoteOption color={state.appTheme.text_lighter} size={28} onPress={onPressOption}/>
 
 			{/*{ showNoteOption?*/}
 			{/*	<animated.View style={[noteOptionAnimation, {*/}

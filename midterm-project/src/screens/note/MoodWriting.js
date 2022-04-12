@@ -1,4 +1,4 @@
-import {BaseContainer, HStack, VStack} from "../../components/Layout";
+import {BaseContainer, Container, HStack, VStack} from "../../components/Layout";
 import {Keyboard, Pressable, TextInput} from "react-native";
 import {useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
@@ -9,6 +9,7 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {ACTIONS} from "../../global_state/actions";
 import {saveNoteData} from "../../utility/asyncManager";
+import {NoteAngryIcon, NoteHappyIcon, NoteSadIcon, NoteSosoIcon} from "../../components/IconButton";
 
 const MoodWriting = ({navigation, route}) => {
 
@@ -19,6 +20,8 @@ const MoodWriting = ({navigation, route}) => {
 	const [noteTitle, setNoteTitle] = useState(title)
 	const [noteContent, setNoteContent] = useState(content)
 	const [showNoteOption, setShowNoteOption] = useState(false)
+
+	const [activeMoodIcon, setActiveMoodIcon] = useState(1)
 
 	const safeInset = useSafeAreaInsets()
 
@@ -127,45 +130,58 @@ const MoodWriting = ({navigation, route}) => {
 
 				</animated.View>
 
-				<TextInput
-					style={{
-						marginTop: 12,
-						paddingHorizontal: 24,
-						paddingVertical: 8,
-						width: "100%",
-						fontSize: 24,
-						fontWeight: "bold",
-						color: "dimgray"
-					}}
+				<Container>
+					<TextInput
+						style={{
+							marginTop: 12,
+							paddingHorizontal: 24,
+							paddingVertical: 8,
+							width: "100%",
+							fontSize: 24,
+							fontWeight: "bold",
+							color: "dimgray"
+						}}
 
-					autoCapitalize="none"
-					selectionColor="gray"
-					placeholder="title"
-					// placeholderTextColor
-					value={noteTitle}
-					onChangeText={(noteTitle)=> setNoteTitle(noteTitle)}
-				/>
+						autoCapitalize="none"
+						selectionColor="gray"
+						placeholder="title"
+						// placeholderTextColor
+						value={noteTitle}
+						onChangeText={(noteTitle)=> setNoteTitle(noteTitle)}
+					/>
+					<VStack marginTop={12} paddingTop={20} paddingBottom={10} justifyContent={"space-between"} height={150} borderWidth={2} borderRadius={16} borderColor={state.appTheme.top_background_darken_opaque50} backgroundColor={state.appTheme.top_background_lighter_opaque50} marginHorizontal={20} >
+						<VarText type="md" content ={ state.userSetting.userName + "今天的心情是..."} marginLeft={28} fontWeight={"bold"} color={state.appTheme.text_lighter}/>
+						<HStack align width={"100%"} justifyContent={"space-evenly"} paddingHorizontal={18}>
+							<NoteHappyIcon size={80} active={activeMoodIcon === 1} onPress={()=>{ setActiveMoodIcon(1)}}/>
+							<NoteSosoIcon size={80} active={activeMoodIcon === 2} onPress={()=>{ setActiveMoodIcon(2)}}/>
+							<NoteSadIcon size={80} active={activeMoodIcon === 3} onPress={()=>{ setActiveMoodIcon(3)}}/>
+							<NoteAngryIcon size={80} active={activeMoodIcon === 4} onPress={()=>{ setActiveMoodIcon(4)}}/>
+						</HStack>
+					</VStack>
+				</Container>
 
-				<TextInput
-					style={{
-						paddingHorizontal: 24,
-						paddingVertical: 8,
-						width: "100%",
-						fontSize: 20,
-						color: "gray"
-					}}
+				<Container flex={1} marginTop={16} marginBottom={16} paddingTop={20} paddingBottom={10} justifyContent={"space-between"} height={150} borderWidth={2} borderRadius={16} borderColor={state.appTheme.top_background_darken_opaque50} backgroundColor={state.appTheme.top_background_lighter_opaque50} marginHorizontal={20} >
+					<TextInput
+						style={{
+							paddingHorizontal: 24,
+							paddingVertical: 8,
+							width: "100%",
+							fontSize: 18,
+							color: "gray"
+						}}
 
-					multiline={true }
-					autoCapitalize="none"
-					selectionColor="gray"
-					placeholder="description"
-					value={noteContent}
-					onChangeText={async(noteContent)=> {
-						setNoteContent(noteContent)
+						multiline={true }
+						autoCapitalize="none"
+						selectionColor="gray"
+						placeholder="description"
+						value={noteContent}
+						onChangeText={async(noteContent)=> {
+							setNoteContent(noteContent)
 
+						}}
+					/>
+				</Container>
 
-					}}
-				/>
 			</Pressable>
 		</BaseContainer>
 	)

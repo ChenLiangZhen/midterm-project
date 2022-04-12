@@ -11,6 +11,7 @@ const initialAppState = {
 	userSignedIn: false,
 	userNoteData: {},
 	userSetting: {
+		userName: "你叫什麼名字呀？ ",
 		noteDisplayTwoColumn : false,
 		tabBarDisplayFloat: false,
 	}

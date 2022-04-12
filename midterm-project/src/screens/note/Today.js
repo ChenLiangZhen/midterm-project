@@ -1,5 +1,13 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
-import {FeatherPenIcon, GridIcon, Plus, StackIcon} from "../../components/IconButton";
+import {
+	FeatherPenIcon,
+	GridIcon, NoteAngryIcon,
+	NoteHappyIcon,
+	NoteSadIcon,
+	NoteSosoIcon,
+	Plus,
+	StackIcon
+} from "../../components/IconButton";
 import {FlatList, Pressable, Vibration, View} from "react-native";
 import {createRef, useCallback, useContext, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
@@ -11,7 +19,7 @@ import ActionSheet, {SheetManager} from "react-native-actions-sheet";
 import {animated, config, useTransition} from "@react-spring/native";
 import HeartAnim from "../../components/HeartAnim";
 
-const NoteItem = ({id, title, content, gridMode, createdAt, navigation}) => {
+const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation}) => {
 
 	const [state, dispatch] = useContext(AppContext)
 	const [selectedStyle, setSelectedStyle] = useState(false)
@@ -31,24 +39,55 @@ const NoteItem = ({id, title, content, gridMode, createdAt, navigation}) => {
 		(styles, item) => item &&
 
 			<animated.View style={styles}>
-				<Pressable style={ selectedStyle? {
+				<Pressable style={ selectedStyle?
+					(!gridMode)? {
 					overflow: "hidden",
-					height: 150,
+					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: "#ececec",
+					backgroundColor: state.appTheme.top_background_darken,
 					borderRadius: 10,
+					borderBottomLeftRadius: 50,
+					borderTopLeftRadius: 50,
 					borderColor: "#ddd",
 					borderWidth: 2,
 					justifyContent: "space-between"
-				} : {
+					} :{
+
+						overflow: "hidden",
+						height: (!gridMode)? 100 : 150,
+						width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
+						margin: 8,
+						backgroundColor: state.appTheme.top_background_darken,
+						borderRadius: 10,
+						borderColor: "#ddd",
+						borderWidth: 2,
+						justifyContent: "space-between"
+					} :
+
+					(!gridMode)? {
+							overflow: "hidden",
+							height: (!gridMode)? 100 : 150,
+							width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
+							margin: 8,
+							backgroundColor: state.appTheme.top_background_lighter_opaque50,
+							borderRadius: 10,
+							borderBottomLeftRadius: 50,
+							borderTopLeftRadius: 50,
+							borderColor: state.appTheme.top_background_darken,
+							borderWidth: 2,
+							justifyContent: "space-between"
+						}:
+
+					{
 					overflow: "hidden",
-					height: 150,
+					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: "#ececec",
+					backgroundColor: state.appTheme.top_background_lighter_opaque50,
 					borderRadius: 10,
-					borderColor: "#ddd",
+
+					borderColor: state.appTheme.top_background_darken,
 					borderWidth: 2,
 					justifyContent: "space-between"
 
@@ -62,25 +101,35 @@ const NoteItem = ({id, title, content, gridMode, createdAt, navigation}) => {
 					SheetManager.show("today" , {targetId: id});
 				}}
 				>
-					<VStack>
-						<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
 
-						<View style={{ backgroundColor:"lightgray", height:1 }}/>
-					</VStack>
+					<HStack>
+						{(!gridMode)?
+							<Container align justify height={100} width={80}>
+								<NoteHappyIcon size={70} active={true}/>
+							</Container>
+							: <></>}
 
-					<VStack height={84} justifyContent="flex-start">
-						<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
+						<Container flex={1}>
+							<VStack>
+								<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
 
-					</VStack>
+								<View style={{ backgroundColor:"lightgray", height:1 }}/>
+							</VStack>
 
-					<VStack width="100%" justifyContent="flex-end">
-						<View style={{ backgroundColor:"lightgray", height:1 }}/>
+							<VStack height={84} justifyContent="flex-start">
+								<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
 
-						<HStack justifyContent="flex-end">
-							<VarText type="sm" content={"" + createdAt.year + "．" + createdAt.month + "．" + createdAt.day} marginLeft={10} margin={4} color="#b8b8b8" lineHeight={20}/>
-						</HStack>
-					</VStack>
+							</VStack>
 
+							<VStack width="100%" justifyContent="flex-end">
+								<View style={{ backgroundColor:"lightgray", height:1 }}/>
+
+								<HStack justifyContent="flex-end">
+									<VarText type="sm" content={"" + createdAt.year + "．" + createdAt.month + "．" + createdAt.day} marginLeft={10} margin={4} color="#b8b8b8" lineHeight={20}/>
+								</HStack>
+							</VStack>
+						</Container>
+					</HStack>
 				</Pressable>
 			</animated.View>
 	)
@@ -108,7 +157,7 @@ const Today = ({navigation}) => {
 
 	const [actionSheetDeleteTarget, setActionSheetDeleteTarget] = useState("")
 
-	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} gridMode={displayGrid} createdAt={item.createdAt}/> )
+	const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} gridMode={displayGrid} createdAt={item.createdAt} nodeMood={item.noteMood}/> )
 
 
 	return(
@@ -157,7 +206,8 @@ const Today = ({navigation}) => {
 										 title:  userNoteDataCopy.note[target].title,
 										 content:  userNoteDataCopy.note[target].content,
 										 id: ""   + new Date().getFullYear() + "_" + (new Date().getMonth() +1) +"_" + new Date().getDate() +"_" + new Date().getHours() +"_" + new Date().getMinutes() +"_" + new Date().getSeconds() + "_" + new Date().getMilliseconds(),
-							          createdAt: userNoteDataCopy.note[target].createdAt
+							          createdAt: userNoteDataCopy.note[target].createdAt,
+							          noteMood: userNoteDataCopy.note[target].noteMood
 						          }
 
 						          //將此筆資料從該index刪除
@@ -183,11 +233,11 @@ const Today = ({navigation}) => {
 
 				<HStack width={200} align justifyContent="flex-end">
 					{displayGrid?
-						<GridIcon color="black" size={24}
+						<GridIcon color={state.appTheme.text_light} size={24}
 						          onPress={() => setDisplayGrid(false)}
 						/> :
 
-						<StackIcon color="black" size={24}
+						<StackIcon color={state.appTheme.text_light} size={24}
 						           onPress={()=> setDisplayGrid(true)}
 						/>}
 					<Plus marginLeft={12} color= {state.appTheme.selected_accent} size={26} onPress={ async ()=>{
@@ -269,8 +319,6 @@ const Today = ({navigation}) => {
 				}
 
 			</Container>
-
-			<HeartAnim opacity={1} size={200}/>
 		</BaseContainer>
 	)
 }
