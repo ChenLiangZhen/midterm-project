@@ -4,7 +4,7 @@ export const appTheme = {
 		misc1: "transparent",
 		accent1: "red",
 		base_background: "#fff",
-		top_background: "#fff",
+		top_background: "#eee",
 		top_background_lighter: "#fff",
 		top_background_lighter_opaque50: "#fff",
 		top_background_weak: "#fff",
@@ -13,6 +13,7 @@ export const appTheme = {
 		top_background_darken_opaque: "#fff",
 		top_background_darken_opaque_dark: "#fff",
 		tab_active: "#000",
+		tab_background: "#eee",
 		tab_active_float: "#000",
 		tab_active_accent: "#000",
 		tab_inactive: "#ccc",
@@ -29,7 +30,7 @@ export const appTheme = {
 
 	warm_brown: {
 		misc1: "transparent",
-		accent1: "#F7B4AF",
+		accent1: "#f7b4af",
 		base_background: "#FFFFF2",
 		top_background: "#eee5d6",
 		top_background_lighter: "#f6efe1",

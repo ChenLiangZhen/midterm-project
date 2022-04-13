@@ -5,8 +5,8 @@ const appReducer = (state, action) => {
 	switch (action.type) {
 		case ACTIONS.SET_APP_THEME:
 
-		function getTheme(){
-			switch(action.payload){
+		function getTheme() {
+			switch (action.payload) {
 				case "warm_brown":
 					console.log("executed")
 					return appTheme.warm_brown
@@ -42,17 +42,30 @@ const appReducer = (state, action) => {
 			}
 
 		case ACTIONS.SET_USER_SETTING:
-		return {
-			...state,
-			userSetting: action.payload
-		}
+			return {
+				...state,
+				userSetting: action.payload
+			}
 
 		case ACTIONS.SET_FIRST_TIME_USING:
-			return{
+			return {
 				...state,
 				firstTimeUsing: action.payload
 			}
 
-	}};
+		case ACTIONS.SET_USER_SIGNED_IN:
+			return {
+				...state,
+				userSignedIn: action.payload
+			}
+
+		case ACTIONS.SET_APP_BACKGROUND_SELECTED:
+			return {
+				...state,
+				appBackgroundSelected: action.payload
+			}
+
+	}
+};
 
 export default appReducer

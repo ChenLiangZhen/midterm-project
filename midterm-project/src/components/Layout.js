@@ -2,9 +2,11 @@ import {ImageBackground, KeyboardAvoidingView, Platform, Pressable, StatusBar, V
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../global_state/AppStateProvider";
+import {getUserSetting} from "../utility/asyncManager";
 
 export function BaseContainer({children, onTouchStart, type, ...props}){
 
+	let link
 	const [state, dispatch] = useContext(AppContext)
 
 	const [background, setBackground] = useState("")
@@ -16,10 +18,10 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 	const [token, setToken] = useState({})
 
 	useEffect( async ()=>{
-		setBackground(state.userSetting.background)
-
-		await new Promise(resolve => setTimeout(resolve, 1000));
-
+		link = await getUserSetting()
+		console.log(link)
+		await setBackground(state.userSetting.background)
+		await new Promise(resolve => setTimeout(resolve, 100));
 	}, [])
 
 	return(
@@ -38,27 +40,27 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 								flex: 1,
 								...props}}>
 
-							<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
+							<StatusBar barStyle="default" backgroundColor={state.appTheme.base_background}/>
 
 
 							{children}
 						</KeyboardAvoidingView>:
 
-					<ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
+					<ImageBackground source={state.userSetting.displayBackground? require("../resource/bigcookie.png") : {}}
 
 					                 style={{
 						                 flex: 1,
 						                 justifyContent: "center",
 					                 }}
-					                 resizeMode={"cover"}>
-						<KeyboardAvoidingView
+					                 resizeMode={"cover"}><KeyboardAvoidingView
 							behavior={Platform.OS === "ios" ? "padding": "height"}
 							style={{
 								flex: 1,
-								...props}}>
+								...props}}><StatusBar barStyle="default" backgroundColor={state.appTheme.base_background}/>
 
-							<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
-
+							{/*{state.appThemeSelected === "dark"?*/}
+							{/*	<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :*/}
+							{/*	<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }*/}
 
 							{children}
 						</KeyboardAvoidingView>
@@ -88,8 +90,9 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 
 
 						{children}
+
 					</KeyboardAvoidingView>
-					: <ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
+					: <ImageBackground source={state.userSetting.displayBackground? require("../resource/bigcookie.png") : {}}
 
 					                   style={{
 						                   flex: 1,

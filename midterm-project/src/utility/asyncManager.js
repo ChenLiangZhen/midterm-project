@@ -52,3 +52,13 @@ export async function getThemeSelected(){
 		console.log("no data stored!")
 	}
 }
+
+export async function clearAllData() {
+
+	AsyncStorage.getAllKeys()
+		.then(keys => AsyncStorage.multiRemove(keys))
+		.then(() => console.log('success'));
+
+	SecureStore.deleteItemAsync("token")
+		.then(()=> console.log("Wiped user JWT"))
+}

@@ -3,7 +3,7 @@ import {Animated, StatusBar, Text} from "react-native";
 import {VarText} from "../components/Text";
 import {HeartSplash, RightArrowIcon} from "../components/Icon";
 import {useSpring, animated, config} from "@react-spring/native"
-import {useCallback, useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {useFocusEffect} from "@react-navigation/native";
 import {AppContext} from "../global_state/AppStateProvider";
 
@@ -51,7 +51,9 @@ const Welcome = ({navigation}) => {
 
 	return(
 		<BaseContainer justifyContent="center" alignItems="center">
-			<StatusBar barStyle="dark-content"/>
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
 
 				<animated.View style={[welcomeStyle, {
 					alignItems: "center",
@@ -59,7 +61,7 @@ const Welcome = ({navigation}) => {
 					width:"100%",
 					marginBottom: 8
 				}]}>
-					<VarText type="xxl" content= "歡迎來到 DiarySoup" fontWeight={"bold"} color={state.appTheme.text}/>
+					<VarText type="xxl" content= "歡迎來到 DailySoup" fontWeight={"bold"} color={state.appTheme.text}/>
 				</animated.View>
 
 				<animated.View style={[welcomeStyle, {

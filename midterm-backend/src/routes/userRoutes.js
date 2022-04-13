@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.post("/api/signup", async (req, res) => {
 
-	const { email, password } = req.body
+	const { nickname ,email, password } = req.body
 	let linkId, userData
 
 	try{
@@ -18,7 +18,7 @@ router.post("/api/signup", async (req, res) => {
 		}
 
 		//以 User Model 建立新的使用者，並儲存使用者至資料庫
-		const user = new User({ email, password })
+		const user = new User({ nickname ,email, password })
 		await user.save()
 
 
@@ -27,31 +27,39 @@ router.post("/api/signup", async (req, res) => {
 
 		linkId = user._id
 		userData = {
-			setting: {
-				theme: "dark"
-			},
-			notes:[
+			noteData: [
 				{
-					title: "this is a rainy day...",
-					content: "have you ever liked me...?"
+					id: "0",
+					title: "心情好好～～",
+					content: "從來沒想過會遇到這麼雞掰的一天．．．",
+					createdAt: {
+						year: 2022,
+						month: 4,
+						day: 4
+					},
+					noteMood: 1
 				},
-
 				{
-					title: "sometimes",
-					content: "fall into despair..."
+					id: "1",
+					title: "今天超雞掰！！！",
+					content: "心情怎麼可以這麼好 wow",
+					createdAt: {
+						year: 2022,
+						month: 4,
+						day: 5
+					},
+					noteMood: 1
 				},
 			],
-			bookmarked:[
-				{
-					title: "this is a rainy day...",
-					content: "have you ever liked me...?"
-				},
-
-				{
-					title: "sometimes",
-					content: "fall into despair..."
-				},
-			]
+			setting: {
+				userName: nickname,
+				userEmail: email,
+				displayBackground: false,
+				background: "bigcookie",
+				accessibility: false,
+				noteDisplayTwoColumn : false,
+				tabBarDisplayFloat: false,
+			}
 		}
 
 		const data = new UserData({
@@ -85,7 +93,10 @@ router.post('/api/signin', async(req, res) => {
 	try{
 		await user.comparePassword(password)
 		const token = jwt.sign({ userId: user._id }, "U0VDUkVUX0tFWV9PRl9NSURURVJNX1BST0pFQ1Q=")
-		res.send({ token })
+
+		const userData = await UserData.findOne({userLink: user._id})
+
+		res.send({ token, userData })
 	}catch (e){
 		return res.status(422).send({ error: "invalid password of email"})
 	}

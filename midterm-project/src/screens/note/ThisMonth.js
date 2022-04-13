@@ -8,8 +8,8 @@ import {
 	Plus,
 	StackIcon
 } from "../../components/IconButton";
-import {FlatList, Pressable, Vibration, View} from "react-native";
-import {createRef, useCallback, useContext, useState} from "react";
+import {FlatList, Pressable, StatusBar, Vibration, View} from "react-native";
+import React, {createRef, useCallback, useContext, useState} from "react";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {VarText} from "../../components/Text";
 import {WIDTH} from "../../utility/deviceUtility";
@@ -183,7 +183,9 @@ const ThisMonth = ({navigation}) => {
 	return(
 
 		<BaseContainer flex={1}>
-
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
 			<ActionSheet
 				ref={actionSheetRef}
 				id="today"

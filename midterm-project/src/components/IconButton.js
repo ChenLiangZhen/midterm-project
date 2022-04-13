@@ -1,7 +1,8 @@
 import {Feather, FontAwesome, MaterialCommunityIcons} from "@expo/vector-icons";
 import {Image, Pressable} from "react-native";
 import {config, animated, useSpring} from "@react-spring/native";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {AppContext} from "../global_state/AppStateProvider";
 
 export function RightArrowIcon({color, size, onPress, ...props}){
 	return(
@@ -47,6 +48,28 @@ export function FeatherPenIcon({color, size, onPress, ...props}){
 			onPress={onPress}
 		>
 			<Feather name="feather" color={color} size={size}/>
+		</Pressable>
+	)
+}
+
+
+export function FeatherPenCircleIcon({color, size, onPress, ...props}){
+
+	const [state, dispatch] = useContext(AppContext)
+
+	return(
+		<Pressable style={{
+			borderRadius: 100,
+			justifyContent: "center",
+			backgroundColor: state.appTheme.tab_active,
+			alignItems: "center",
+			height: size +24,
+			width: size +24,
+			...props
+		}}
+			onPress={onPress}
+		>
+			<Feather name="feather" color={state.appTheme.base_background} size={size}/>
 		</Pressable>
 	)
 }
@@ -259,8 +282,8 @@ export function HeartSplash(){
 		<Pressable style={{
 			justifyContent: "center",
 			alignItems: "center",
-			height:32,
-			width: 32,
+			height:26,
+			width: 26,
 		}}
 			onPress={()=> setPresent(true)}
 		>
@@ -270,27 +293,27 @@ export function HeartSplash(){
 					<animated.View style={[heart1, {
 					position: "absolute"
 					}]}>
-					<FontAwesome name="heart" color="red" size={20}/>
+					<FontAwesome name="heart" color="#F7B4AF" size={16}/>
 					</animated.View>
 
 					<animated.View style={[heart2, {
 						position: "absolute"
 					}]}>
-						<FontAwesome name="heart" color="red" size={18}/>
+						<FontAwesome name="heart" color="#F7B4AF"size={14}/>
 					</animated.View>
 
 					<animated.View style={[heart3, {
 					position: "absolute"
 					}]}>
-					<FontAwesome name="heart" color="red" size={14}/>
+					<FontAwesome name="heart" color="#F7B4AF"size={10}/>
 					</animated.View>
 
 				</> : <></>
 			}
 
 			{present?
-				<FontAwesome name="heart" color="red" size={32}/>
-				:	<FontAwesome name="heart-o" color="red" size={32}/>
+				<FontAwesome name="heart" color="#F7B4AF" size={22}/>
+				:	<FontAwesome name="heart-o" color="#F7B4AF" size={22}/>
 
 			}
 

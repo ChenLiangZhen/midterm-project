@@ -80,9 +80,8 @@ const ChooseTheme = ({navigation}) => {
            <>
 				<SettingItem position="top" onPress={async () => {
 
-					dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: "warm_brown"})
-					dispatch({type: ACTIONS.SET_APP_THEME, payload: "warm_brown"})
-					await saveThemeSelected("warm_brown")
+					dispatch({type: ACTIONS.SET_APP_BACKGROUND_SELECTED, payload: "../resource/cookiemr.png"})
+					await saveThemeSelected("../resource/cookiemr.png")
 				}}>
 					<VarText type="sm" color={state.appTheme.text_lighter} letterSpacing={.5}>小餅乾</VarText>
 					{state.appThemeSelected === "warm_brown" ? <Check size={14} color={state.appTheme.text}/> : <></>}
@@ -94,9 +93,8 @@ const ChooseTheme = ({navigation}) => {
 
 				<SettingItem position="middle" onPress={async ()=>{
 
-				dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: "dark"})
-				dispatch({type: ACTIONS.SET_APP_THEME, payload: "dark"})
-				await saveThemeSelected("dark")
+					dispatch({type: ACTIONS.SET_APP_BACKGROUND_SELECTED, payload: "../resource/bigcookie.png"})
+					await saveThemeSelected("../resource/bigcookie.png")
 
 			}}>
 				<VarText type="sm"  color={state.appTheme.text_lighter} letterSpacing={.5}>大餅乾</VarText>
@@ -107,10 +105,8 @@ const ChooseTheme = ({navigation}) => {
 
 				<SettingItem position="bottom" onPress={async()=>{
 
-				dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: "blackwhite"})
-				dispatch({type: ACTIONS.SET_APP_THEME, payload: "blackwhite"})
-				await saveThemeSelected("blackwhite")
-
+					dispatch({type: ACTIONS.SET_APP_BACKGROUND_SELECTED, payload: "../resource/line.png"})
+					await saveThemeSelected("../resource/line.png")
 			}}>
 				<VarText type="sm"  color={state.appTheme.text_lighter} letterSpacing={.5}>線條</VarText>
 			{state.appThemeSelected === "blackwhite"? <Check size={14} color={state.appTheme.text}/>: <></>}

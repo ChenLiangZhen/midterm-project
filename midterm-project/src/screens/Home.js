@@ -1,12 +1,11 @@
 import {FlatList, Platform, Pressable, StatusBar} from "react-native";
 import {BaseContainer, Container, HStack, PressBox} from "../components/Layout";
-import {LeftArrowIcon, RightArrowIcon} from "../components/IconButton";
+import {FeatherPenCircleIcon, LeftArrowIcon, RightArrowIcon} from "../components/IconButton";
 import React, {useContext, useEffect, useState} from "react";
 import {VarText} from "../components/Text";
 import {genCalendarObj} from "calendar-generator";
 import {animated, config, useTransition} from "@react-spring/native";
 import {WIDTH} from "../utility/deviceUtility";
-import HeartAnim from "../components/HeartAnim";
 import {AppContext} from "../global_state/AppStateProvider";
 
 function RenderItemDay({year, day, month, navigateDirection, navigation}) {
@@ -224,7 +223,12 @@ export const Home = ({navigation}) => {
 
 
 	return (
-		<BaseContainer marginTop={Platform.OS === "ios"? 12 : 12} width="100%" height="100%">
+		<BaseContainer marginTop={Platform.OS === "ios"? 12 : 12} width="100%" height="100%" justifyContent={"space-evenly"}>
+
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
+
 
 			{/*{ show &&*/}
 			{/*	<DateTimePicker testID="dateTimePicker"*/}
@@ -333,6 +337,10 @@ export const Home = ({navigation}) => {
 				}
 
 			</Container>
+
+			<HStack width={"100%"} paddingHorizontal={20} justifyContent={"flex-end"}>
+				<FeatherPenCircleIcon size={36} onPress={()=> {navigation.navigate("ThisMonth")}}/>
+			</HStack>
 			{/*const renderNotes = ({item}) => ( <NoteItem id={item.id} title={item.title} content={item.content} navigation={navigation} mode={displayMode} createdAt={item.createdAt}/> )*/}
 
 		</BaseContainer>

@@ -77,7 +77,7 @@
 // }
 
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, StatusBar, Text, View} from 'react-native';
 import {config, animated, useSpring} from "@react-spring/native";
 import {AppContext} from "../global_state/AppStateProvider";
 
@@ -115,6 +115,9 @@ export default function Splash({navigation}) {
 	return (
 		<View
 			style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
 			<animated.View style={[logoAnim, {  alignItems: 'center', justifyContent: 'center' }]}>
 				<Image
 					resizeMode="contain"

@@ -1,15 +1,20 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../components/Layout";
-import {StatusBar, Text, TextInput, View} from "react-native";
+import {Keyboard, StatusBar, Text, TextInput, View} from "react-native";
 import {TextStandard, VarText} from "../components/Text";
 import {RightArrowIcon} from "../components/Icon";
 import {useFocusEffect} from "@react-navigation/native";
 import {useCallback, useContext, useEffect, useState} from "react";
-import {config,animated, useSpring} from "@react-spring/native";
+import {config, animated, useSpring} from "@react-spring/native";
 import {Key, Mail} from "../components/Icon";
 import MoodWriting from "./note/MoodWriting";
 import {AppContext} from "../global_state/AppStateProvider";
 import {LeftArrowIcon} from "../components/IconButton";
-import {HEIGHT} from "../utility/deviceUtility";
+import {HEIGHT, WIDTH} from "../utility/deviceUtility";
+import {signManager} from "../../api/axiosManager";
+import {print4} from "../utility/colorConsole";
+import {saveNoteData, saveToken} from "../utility/asyncManager";
+import {ACTIONS} from "../global_state/actions";
+import {LoadingOverlay} from "../components/DefinedLayout";
 
 const Signin = ({navigation}) => {
 
@@ -24,30 +29,31 @@ const Signin = ({navigation}) => {
 	const [passwordInput, setPasswordInput] = useState("")
 
 	const signinCard = useSpring({
-		opacity: present? 1: 0,
-		right: present? 0: -400,
+		opacity: present ? 1 : 0,
+		right: present ? 0 : -400,
 		config: config.slow
 	})
 
 	const signinTitle = useSpring({
-		opacity: present? 1: 0,
-		right: present? 0: -100,
+		opacity: present ? 1 : 0,
+		right: present ? 0 : -100,
 		delay: 500,
 		config: config.slow
 	})
 
 	const pressbox = useSpring({
-		opacity: present? 1: 0,
+		opacity: present ? 1 : 0,
 		delay: 750,
 		config: config.slow
 	})
 
 	const statusView = useSpring({
-		opacity: showStatusView? 1: 0,
+		opacity: showStatusView ? 1 : 0,
 		delay: 0,
-		bottom: showStatusView? 200: 0,
-		config: config.stiff,
-		onRest: ()=>{
+		bottom: showStatusView ? 100 : 50,
+		config: config.default,
+		onRest: async () => {
+			await new Promise(resolve => setTimeout(resolve, 1250));
 			setShowStatusView(false)
 		}
 	})
@@ -59,31 +65,36 @@ const Signin = ({navigation}) => {
 	);
 
 
-	return(
+	return (
 		<BaseContainer justifyContent="space-between" alignItems="center">
-			<StatusBar barStyle="dark-content"/>
+
+			{isAsync ? <LoadingOverlay/>
+				: <></>}
+
 
 			<animated.View style={[statusView, {
 				position: "absolute",
-				left: 20,
+				width: WIDTH,
+				alignItems: "center"
+
 			}]}>
-				<VarText type="md" content={statusCode}/>
+				<VarText type="md" content={statusCode} color={state.appTheme.selected_accent} fontWeight={"bold"}/>
 			</animated.View>
 
 			<HStack align height={64} marginLeft={32} width={"100%"}>
-				<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={()=> navigation.goBack()}/>
+				<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={() => navigation.goBack()}/>
 			</HStack>
 
 			<Container align height={HEIGHT * 0.65} width="100%" alignItems="flex-end">
 				<VStack width="100%" alignItems="flex-end">
 					<animated.View style={[signinTitle, {
-						width:"100%",
-						justifyContent:"flex-start",
-						paddingLeft:"10%",
+						width: "100%",
+						justifyContent: "flex-start",
+						paddingLeft: "10%",
 						marginBottom: 36,
 					}]}>
-						<HStack >
-							<VarText type="xl" content="登入 DiarySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
+						<HStack>
+							<VarText type="xl" content="登入 DailySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
 						</HStack>
 					</animated.View>
 
@@ -106,10 +117,10 @@ const Signin = ({navigation}) => {
 								autoCapitalize="none"
 								textContentType="emailAddress"
 								placeholder="電子郵件"
-								placeholderTextColor={ state.appTheme.text_light}
+								placeholderTextColor={state.appTheme.text_light}
 								value={emailInput}
-								onChangeText={(input)=> setEmailInput(input)}
-								selectionColor= {state.appTheme.text_light}
+								onChangeText={(input) => setEmailInput(input)}
+								selectionColor={state.appTheme.text_light}
 								style={{
 									width: "100%",
 									borderRadius: 8,
@@ -134,10 +145,10 @@ const Signin = ({navigation}) => {
 								textContentType="password"
 								secureTextEntry={true}
 								placeholder="密碼"
-								placeholderTextColor={ state.appTheme.text_light}
+								placeholderTextColor={state.appTheme.text_light}
 								value={passwordInput}
-								onChangeText={(input)=> setPasswordInput(input)}
-								selectionColor= {state.appTheme.text_light}
+								onChangeText={(input) => setPasswordInput(input)}
+								selectionColor={state.appTheme.text_light}
 								style={{
 									width: "100%",
 									borderRadius: 8,
@@ -152,8 +163,8 @@ const Signin = ({navigation}) => {
 
 					</animated.View>
 
-					<animated.View style={[pressbox, { marginTop: 24, marginRight: 16, alignItems: "flex-end"}]}>
-						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
+					<animated.View style={[pressbox, {marginTop: 24, marginRight: 16, alignItems: "flex-end"}]}>
+						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={() => {
 							setPresent(false)
 							navigation.navigate("Signup")
 						}}>
@@ -161,7 +172,7 @@ const Signin = ({navigation}) => {
 							<RightArrowIcon color={state.appTheme.text_light} size={20}/>
 						</PressBox>
 
-						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={()=> {
+						<PressBox justifyContent={"flex-end"} padding={4} width={200} align onPress={() => {
 							setPresent(false)
 							navigation.navigate("Signup")
 						}}>
@@ -175,12 +186,72 @@ const Signin = ({navigation}) => {
 						{/*登入程式碼*/}
 						{/*登入程式碼*/}
 
-						<PressBox justifyContent={"flex-end"} padding={4} width={100} align onPress={()=> {
+						<PressBox justifyContent={"flex-end"} padding={4} width={100} align onPress={() => {
+
+							setStatusCode("")
+							Keyboard.dismiss()
+
+							if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailInput)) {
+
+								setStatusCode("Email 格式錯誤")
+								setShowStatusView(true)
+								return
+							}
+
+							if (emailInput === "" || passwordInput === "") {
+
+								setStatusCode("必須填寫所有欄位")
+								setShowStatusView(true)
+								return
+							}
+
+							setIsAsync(true)
+
+
+							signManager.post("/api/signin", {
+								"email": emailInput,
+								"password": passwordInput
+							})
+								.then(
+									async res => {
+
+										setIsAsync(false)
+										print4("resolved", "MoodWriting", "Signin", res)
+
+										console.log("success1")
+										await saveToken(JSON.stringify(res.data.token))
+										dispatch({type: ACTIONS.SET_USER_SIGNED_IN, payload: true})
+
+										console.log("success2")
+
+										await saveNoteData(JSON.stringify(res.data.userData.data.noteData))
+
+										dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: res.data.userData.data.noteData})
+										dispatch({type: ACTIONS.SET_USER_SETTING, payload: res.data.userData.data.setting})
+
+										setStatusCode("成功登入！")
+										setShowStatusView(true)
 
 
 
+										await new Promise(resolve => setTimeout(resolve, 2000));
+										navigation.navigate("TabContent")
+
+									}, rej => {
+										setIsAsync(false)
+
+										if (rej.message === "Request failed with status code 422") {
+											setStatusCode("帳號或密碼錯誤")
+											setShowStatusView(true)
+										} else {
+											setStatusCode("伺服器錯誤")
+											setShowStatusView(true)
+										}
+										print4("rejected", "MoodWriting", "Signin", rej)
+									})
 						}}>
-							<VarText type="md" content="登入" color={state.appTheme.selected_accent} fontWeight={"bold"} marginRight={4}/>
+							<VarText type="md" content="登入" color={state.appTheme.selected_accent} fontWeight={"bold"}
+							         marginRight={4}/>
 							<RightArrowIcon color={state.appTheme.selected_accent} size={20}/>
 						</PressBox>
 					</animated.View>

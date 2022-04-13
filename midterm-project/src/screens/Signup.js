@@ -1,5 +1,5 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../components/Layout";
-import {StatusBar, Text, TextInput, View} from "react-native";
+import {Keyboard, StatusBar, Text, TextInput, View} from "react-native";
 import {TextStandard, VarText} from "../components/Text";
 import {RightArrowIcon, User} from "../components/Icon";
 import {useFocusEffect} from "@react-navigation/native";
@@ -99,7 +99,7 @@ const Signup = ({navigation}) => {
 						marginBottom: 36,
 					}]}>
 						<HStack >
-							<VarText type="xl" content="註冊 DiarySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
+							<VarText type="xl" content="註冊 DailySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
 						</HStack>
 					</animated.View>
 
@@ -212,6 +212,8 @@ const Signup = ({navigation}) => {
 						<PressBox justifyContent={"flex-end"}  padding={4} width={100} align onPress={()=>{
 
 							setStatusCode("")
+							Keyboard.dismiss()
+
 
 							if(nicknameInput === "" || emailInput === "" || passwordInput=== ""){
 
@@ -235,8 +237,10 @@ const Signup = ({navigation}) => {
 							}
 
 							else {
+
 								setIsAsync(true)
 								signManager.post("/api/signup", {
+									"nickname" : nicknameInput,
 									"email": emailInput,
 									"password": passwordInput
 								})
@@ -248,6 +252,11 @@ const Signup = ({navigation}) => {
 											await saveToken(JSON.stringify(res.data.token))
 											// dispatch({type: ACTIONS.})
 
+											setStatusCode("註冊成功！ 返回登入畫面...")
+											setShowStatusView(true)
+
+											await new Promise(resolve => setTimeout(resolve, 2000));
+											navigation.navigate("Signin")
 										}, rej=>{
 											setIsAsync(false)
 

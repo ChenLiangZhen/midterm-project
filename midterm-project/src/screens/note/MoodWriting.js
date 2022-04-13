@@ -1,6 +1,6 @@
 import {BaseContainer, Container, HStack, VStack} from "../../components/Layout";
-import {Keyboard, Pressable, TextInput} from "react-native";
-import {useContext, useEffect, useState} from "react";
+import {Keyboard, Pressable, StatusBar, TextInput} from "react-native";
+import React, {useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
 import {NoteHeader} from "../../components/DefinedLayout";
 import {animated, config, useSpring} from "@react-spring/native";
@@ -75,8 +75,13 @@ const MoodWriting = ({navigation, route}) => {
 
 	return(
 		<BaseContainer>
+
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
 			<Pressable flex={1} onPress={()=> {
 				Keyboard.dismiss()
+
 				setShowNoteOption(false)
 			}}>
 				<NoteHeader navigation={navigation}
@@ -145,6 +150,7 @@ const MoodWriting = ({navigation, route}) => {
 						value={noteTitle}
 						onChangeText={(noteTitle)=> setNoteTitle(noteTitle)}
 					/>
+
 					<VStack marginTop={12} paddingTop={20} paddingBottom={10} justifyContent={"space-between"} height={150} borderWidth={2} borderRadius={16} borderColor={state.appTheme.top_background_darken_opaque50} backgroundColor={state.appTheme.top_background_lighter_opaque50} marginHorizontal={20} >
 						<VarText type="md" content ={ state.userSetting.userName + "今天的心情是..."} marginLeft={28} fontWeight={"bold"} color={state.appTheme.text_lighter}/>
 						<HStack align width={"100%"} justifyContent={"space-evenly"} paddingHorizontal={18}>

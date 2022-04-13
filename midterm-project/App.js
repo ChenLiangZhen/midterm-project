@@ -20,8 +20,10 @@ import {Feather, Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {WIDTH} from "./src/utility/deviceUtility";
 import Splash from "./src/screens/Splash";
 import Setting from "./src/screens/me/Setting";
-import {Platform} from "react-native";
+import {LogBox, Platform} from "react-native";
 import ChooseTheme from "./src/screens/ChooseTheme";
+
+LogBox.ignoreAllLogs()
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -192,7 +194,7 @@ function TabNavigator() {
 			initialRouteName="Home"
 			screenOptions={({route}) => ({
 				tabBarIcon: ({focused, color, size}) => {
-					if (route.name === '首頁') {
+					if (route.name === '心情日記') {
 						return (
 							<Feather
 								name={
@@ -290,7 +292,7 @@ function TabNavigator() {
 			})}
 		>
 
-			<Tab.Screen name="首頁" component={Home} options={{headerShown: false}}/>
+			<Tab.Screen name="心情日記" component={Home} options={{headerShown: false}}/>
 			<Tab.Screen name="心靈雞湯" component={MoodSupport} options={{headerShown: false}}/>
 			<Tab.Screen name="星球論壇" component={MoodGalaxy} options={{tabBarBadge: 99, headerShown: false}}/>
 			<Tab.Screen name="我的帳號" component={MyAccount} options={{headerShown: false}}/>

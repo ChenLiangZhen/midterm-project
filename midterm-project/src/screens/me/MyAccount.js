@@ -1,7 +1,7 @@
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {TextStandard, VarText} from "../../components/Text";
 import {RightArrowIcon} from "../../components/IconButton";
-import {Platform, Pressable, ScrollView, View} from "react-native";
+import {Platform, Pressable, ScrollView, StatusBar, View} from "react-native";
 import {BaseContainer, HStack, PressBox, VStack} from "../../components/Layout";
 import {AppContext} from "../../global_state/AppStateProvider";
 import {LoadingOverlay, SettingItem} from "../../components/DefinedLayout";
@@ -9,7 +9,7 @@ import {HEIGHT, WIDTH} from "../../utility/deviceUtility";
 import {Build, Color, Data, User} from "../../components/Icon";
 import SegmentedControlTab from "react-native-segmented-control-tab"
 import {ACTIONS} from "../../global_state/actions";
-import {saveUserSetting} from "../../utility/asyncManager";
+import {clearAllData, saveUserSetting} from "../../utility/asyncManager";
 
 
 const MyAccount = ({navigation}) => {
@@ -34,6 +34,11 @@ const MyAccount = ({navigation}) => {
 
 
 		<BaseContainer flex={1} type={state.userSetting.tabBarDisplayFloat ? "tab" : "tab"}>
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
+			{isAsync? <LoadingOverlay/>
+				: <></>}
 
 			{showConfirmReset?
 				<Pressable style={{
@@ -51,8 +56,18 @@ const MyAccount = ({navigation}) => {
 				>
 
 					<VarText type={"lg"} content={"重新設定？"} fontWeight={"bold"}/>
+					<VarText type={"md"} content={"需要重新啟動"} fontWeight={"bold"}/>
 					<HStack width={WIDTH} height={128} align justify>
-						<PressBox  height={40} width={100} backgroundColor={state.appTheme.selected_accent} onPress={()=>{}} marginRight={12} borderRadius={24}>
+						<PressBox  height={40} width={100} backgroundColor={state.appTheme.selected_accent} onPress={ async ()=>{
+							setIsAsync(true)
+							clearAllData()
+								.then(res=> {setIsAsync(false)
+									navigation.navigate("Welcome")
+								})
+
+
+							navigation.navigate("Splash")
+						}} marginRight={12} borderRadius={24}>
 							<VarText type={"md"} content={"確定"} fontWeight={"bold"} color={"white"}/>
 
 						</PressBox>
@@ -89,8 +104,13 @@ const MyAccount = ({navigation}) => {
 					<User size={32} color={state.appTheme.text_light}/>
 				</Pressable>
 
-				<VStack width={WIDTH - 140} paddingVertical={8} alignItems="flex-end" justifyContent="center"
-				        paddingRight={12}>
+				{state.userSignedIn?  <VStack width={WIDTH - 140} paddingVertical={8} alignItems="flex-end" justifyContent="center" paddingRight={12}>
+					<VarText type={"xl"} content={state.userSetting.userName} fontWeight={"bold"} color={state.appTheme.tab_active}/>
+					<VarText type={"sm"} content={state.userSetting.userEmail} color={state.appTheme.tab_active}/>
+				</VStack>
+
+					: <VStack width={WIDTH - 140} paddingVertical={8} alignItems="flex-end" justifyContent="center"
+				                                     paddingRight={12}>
 					<VarText type="mc" content={state.userSignedIn ? "" : "目前為離線模式"} marginBottom={4} color={state.appTheme.text_light}
 					         lineHeight={28}/>
 
@@ -102,7 +122,7 @@ const MyAccount = ({navigation}) => {
 					<PressBox padding={8} backgroundColor= "transparent" borderRadius={12}
 					          width={96} borderColor={state.appTheme.selected_accent} borderWidth={2}
 					          onPress={() => {
-									 navigation.navigate("Signin")
+						          navigation.navigate("Signin")
 
 
 
@@ -111,11 +131,9 @@ const MyAccount = ({navigation}) => {
 						<VarText type="md" content={state.userSignedIn ? "" : "登入"} fontWeight={"bold"}
 						         color={state.appTheme.selected_accent} />
 					</PressBox>
-				</VStack>
+				</VStack>}
+
 			</HStack>
-
-
-
 			<ScrollView style={{}}
 				showsVerticalScrollIndicator={false}
 			>
