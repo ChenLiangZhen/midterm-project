@@ -1,6 +1,6 @@
 import {BaseContainer, Container, HStack, PressBox, VStack} from "../../components/Layout";
 import {
-	GridIcon,
+	GridIcon, LeftArrowIcon,
 	NoteAngryIcon,
 	NoteHappyIcon,
 	NoteSadIcon,
@@ -18,16 +18,16 @@ import {useFocusEffect} from "@react-navigation/native";
 import ActionSheet, {SheetManager} from "react-native-actions-sheet";
 import {animated, config, useTransition} from "@react-spring/native";
 
-const NoteMood = ({moodDisplay}) => {
+const NoteMood = ({moodDisplay, size}) => {
 	switch (moodDisplay){
 		case 1:
-			return <NoteHappyIcon size={70} active={true}/>
+			return <NoteHappyIcon size={size} active={true}/>
 		case 2:
-			return <NoteSosoIcon size={70} active={true}/>
+			return <NoteSosoIcon size={size} active={true}/>
 		case 3:
-			return <NoteSadIcon size={70} active={true}/>
+			return <NoteSadIcon size={size} active={true}/>
 		case 4:
-			return <NoteAngryIcon size={70} active={true}/>
+			return <NoteAngryIcon size={size} active={true}/>
 	}
 }
 
@@ -57,11 +57,11 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: state.appTheme.top_background_darken,
+					backgroundColor: state.appTheme.tab_background,
 					borderRadius: 10,
 					borderBottomLeftRadius: 50,
 					borderTopLeftRadius: 50,
-					borderColor: "#ddd",
+					borderColor: state.appTheme.top_background_darken,
 					borderWidth: 2,
 					justifyContent: "space-between"
 					} :{
@@ -70,9 +70,9 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 						height: (!gridMode)? 100 : 150,
 						width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 						margin: 8,
-						backgroundColor: state.appTheme.top_background_darken,
+						backgroundColor: state.appTheme.tab_background,
 						borderRadius: 10,
-						borderColor: "#ddd",
+						borderColor: state.appTheme.top_background_darken,
 						borderWidth: 2,
 						justifyContent: "space-between"
 					} :
@@ -82,7 +82,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 							height: (!gridMode)? 100 : 150,
 							width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 							margin: 8,
-							backgroundColor: state.appTheme.top_background_lighter_opaque50,
+							backgroundColor: state.appTheme.tab_background,
 							borderRadius: 10,
 							borderBottomLeftRadius: 50,
 							borderTopLeftRadius: 50,
@@ -96,7 +96,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: state.appTheme.top_background_lighter_opaque50,
+					backgroundColor: state.appTheme.tab_background,
 					borderRadius: 10,
 
 					borderColor: state.appTheme.top_background_darken,
@@ -118,26 +118,31 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					<HStack>
 						{(!gridMode)?
 							<Container align justify height={100} width={80}>
-								<NoteMood moodDisplay={noteMood}/>
+								<NoteMood moodDisplay={noteMood} size={65}/>
 							</Container>
 							: <></>}
 
 						<Container flex={1}>
 							<VStack>
-								<VarText type="md" content={title} marginLeft={10} margin={6} color="dimgray" fontWeight="bold"/>
+								<VarText type="md" content={title} marginLeft={10} margin={6} color={state.appTheme.text} fontWeight="bold"/>
 
-								<View style={{ backgroundColor:"lightgray", height:1 }}/>
+								<View style={{ backgroundColor:state.appTheme.top_background_darken_opaque50, height:1 }}/>
 							</VStack>
 
 							<VStack height={84} justifyContent="flex-start">
-								<VarText type="sm" content={content} marginLeft={10} margin={4} color="dimgray" lineHeight={20}/>
+								<VarText type="sm" content={content} marginLeft={10} margin={4}  color={state.appTheme.text} lineHeight={20}/>
 
 							</VStack>
 
 							<VStack width="100%" justifyContent="flex-end">
-								<View style={{ backgroundColor:"lightgray", height:1 }}/>
+								<View style={{ backgroundColor: state.appTheme.top_background_darken_opaque50, height:1 }}/>
 
-								<HStack justifyContent="flex-end">
+								<HStack justifyContent="space-between" align>
+									{(gridMode)?
+										<Container align justify height={32} width={32}>
+											<NoteMood moodDisplay={noteMood} size={24}/>
+										</Container>
+										: <></>}
 									<VarText type="sm" content={"" + createdAt.year + "．" + createdAt.month + "．" + createdAt.day} marginLeft={10} margin={4} color="#b8b8b8" lineHeight={20}/>
 								</HStack>
 							</VStack>
@@ -148,7 +153,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 	)
 }
 
-const Today = ({navigation}) => {
+const ThisMonth = ({navigation}) => {
 
 
 	const actionSheetRef = createRef()
@@ -195,7 +200,7 @@ const Today = ({navigation}) => {
 				}}
 			>
 				<View>
-					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor="#eaeaea" borderColor="#ccc" borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
+					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor={state.appTheme.top_background_lighter} borderColor={state.appTheme.top_background} borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
 					          onPress={()=> {
 
 						          //以刪除的note的id 進行搜尋index
@@ -209,8 +214,8 @@ const Today = ({navigation}) => {
 						          dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
 						          actionSheetRef.current?.hide()
 					          }}
-					><VarText type={"sm"} content="DELETE" fontWeight={ "bold"} color="#666" letterSpacing={1}/></PressBox>
-					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor="#eaeaea" borderColor="#ccc" borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
+					><VarText type={"sm"} content="DELETE" fontWeight={ "bold"}  color={state.appTheme.text}letterSpacing={1}/></PressBox>
+					<PressBox width= {WIDTH * 0.825} height={48} backgroundColor={state.appTheme.top_background_lighter} borderColor={state.appTheme.top_background} borderWidth={3} zIndex={100} marginBottom={12} borderRadius={100}
 					          onPress={()=> {
 
 						          //以刪除的note的id 進行搜尋index
@@ -234,11 +239,14 @@ const Today = ({navigation}) => {
 						          dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: userNoteDataCopy})
 						          actionSheetRef.current?.hide()
 					          }}
-					><VarText type={"sm"} content="DUPLICATE" fontWeight={ "bold"} color="#666" letterSpacing={1}/></PressBox>
+					><VarText type={"sm"} content="DUPLICATE" fontWeight={ "bold"}  color={state.appTheme.text} letterSpacing={1}/></PressBox>
 				</View>
 			</ActionSheet>
 
-			<HStack width="100%" justifyContent="space-between" padding={16} paddingHorizontal={22} align>
+			<HStack width="100%" justifyContent="space-between" padding={16} paddingHorizontal={18} align>
+
+				<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={() => navigation.goBack()}/>
+
 				<HStack align>
 					<VarText type="xl" content={ " - "} color="#ccc"/>
 					<VarText type="xl" content={" - "} color="gray"/>
@@ -255,7 +263,7 @@ const Today = ({navigation}) => {
 						<StackIcon color={state.appTheme.text_light} size={24}
 						           onPress={()=> setDisplayGrid(true)}
 						/>}
-					<Plus marginLeft={12} color= {state.appTheme.selected_accent} size={26} onPress={ async ()=>{
+					<Plus marginLeft={12} color= {state.appTheme.text_lighter} size={26} onPress={ async ()=>{
 
 						const userNoteDataCopy = state.userNoteData
 
@@ -339,4 +347,4 @@ const Today = ({navigation}) => {
 	)
 }
 
-export default Today
+export default ThisMonth

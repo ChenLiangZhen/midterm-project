@@ -99,7 +99,7 @@ const Signup = ({navigation}) => {
 						marginBottom: 36,
 					}]}>
 						<HStack >
-							<VarText type="xl" content="註冊 MoodDiary" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
+							<VarText type="xl" content="註冊 DiarySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
 						</HStack>
 					</animated.View>
 

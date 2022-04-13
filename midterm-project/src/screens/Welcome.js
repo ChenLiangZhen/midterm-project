@@ -59,7 +59,7 @@ const Welcome = ({navigation}) => {
 					width:"100%",
 					marginBottom: 8
 				}]}>
-					<VarText type="xxl" content="歡迎來到 MoodDiary" fontWeight={"bold"} color={state.appTheme.text}/>
+					<VarText type="xxl" content= "歡迎來到 DiarySoup" fontWeight={"bold"} color={state.appTheme.text}/>
 				</animated.View>
 
 				<animated.View style={[welcomeStyle, {
@@ -69,7 +69,7 @@ const Welcome = ({navigation}) => {
 					height:"40%",
 					width:"100%",
 				}]}>
-					<VarText type="md" content="開始紀錄你的心情吧！" color={state.appTheme.text} marginLeft={6}/>
+					<VarText type="md" content= "開始紀錄你的心情吧！" color={state.appTheme.text} marginLeft={6}/>
 				</animated.View>
 
 				<animated.View style={[btn1, {

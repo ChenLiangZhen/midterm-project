@@ -39,3 +39,16 @@ export async function getUserSetting(){
 		console.log("no data stored!")
 	}
 }
+
+export async function saveThemeSelected(value){
+	await AsyncStorage.setItem("theme", value)
+}
+
+export async function getThemeSelected(){
+	let result = await AsyncStorage.getItem("theme");
+	if (result) {
+		return result
+	} else {
+		console.log("no data stored!")
+	}
+}

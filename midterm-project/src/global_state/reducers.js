@@ -7,16 +7,14 @@ const appReducer = (state, action) => {
 
 		function getTheme(){
 			switch(action.payload){
-				case "light":
+				case "warm_brown":
 					console.log("executed")
-					return appTheme.light
+					return appTheme.warm_brown
 				case "dark":
 					console.log("executed")
 					return appTheme.dark
-				case "solar":
-					return appTheme.solar
-				case "pinky":
-					return appTheme.pinky
+				case "blackwhite":
+					return appTheme.blackwhite
 			}
 		}
 
@@ -29,6 +27,12 @@ const appReducer = (state, action) => {
 			return {
 				...state,
 				testState: action.payload
+			};
+
+		case ACTIONS.SET_APP_THEME_SELECTED:
+			return {
+				...state,
+				appThemeSelected: action.payload
 			};
 
 		case ACTIONS.SET_USER_NOTE_DATA:

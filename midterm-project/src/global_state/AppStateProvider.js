@@ -12,6 +12,9 @@ const initialAppState = {
 	userNoteData: {},
 	userSetting: {
 		userName: "你叫什麼名字呀？ ",
+		displayBackground: false,
+		background: "bigcookie",
+		accessibility: false,
 		noteDisplayTwoColumn : false,
 		tabBarDisplayFloat: false,
 	}

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import AppStateProvider, {AppContext} from "./src/global_state/AppStateProvider";
 import {ACTIONS} from "./src/global_state/actions";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
@@ -8,10 +8,10 @@ import Welcome from "./src/screens/Welcome";
 import {DefaultTheme, NavigationContainer} from "@react-navigation/native";
 import Signin from "./src/screens/Signin";
 import Signup from "./src/screens/Signup";
-import Today from "./src/screens/note/Today";
+import ThisMonth from "./src/screens/note/ThisMonth";
 import MoodWriting from "./src/screens/note/MoodWriting";
 import {SafeAreaProvider} from "react-native-safe-area-context/src/SafeAreaContext";
-import {getNoteData, saveNoteData} from "./src/utility/asyncManager";
+import {getNoteData, getThemeSelected, getUserSetting, saveNoteData} from "./src/utility/asyncManager";
 import {Home} from "./src/screens/Home";
 import MoodSupport from "./src/screens/forum/MoodSupport";
 import MoodGalaxy from "./src/screens/forum/MoodGalaxy";
@@ -25,8 +25,6 @@ import ChooseTheme from "./src/screens/ChooseTheme";
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
-
-
 
 const TEST_DATA = {
 	note: [
@@ -108,20 +106,40 @@ const theme = {
 function Base() {
 
 	const [state, dispatch] = useContext(AppContext)
+	const [appIsReady, setAppIsReady] = useState(false)
 
-	useEffect(()=>{
+	//APP INITIALIZATION
+	//APP INITIALIZATION
+	//APP INITIALIZATION
+	//APP INITIALIZATION
+	//APP INITIALIZATION
+
+	useEffect(async ()=>{
+		await saveNoteData(JSON.stringify(TEST_DATA))
+		const data = await getNoteData()
+		const userSetting = await getUserSetting()
+		const themeSeleted = await getThemeSelected()
+		dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: themeSeleted})
+		dispatch({type: ACTIONS.SET_APP_THEME, payload: themeSeleted})
+		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: JSON.parse(data)})
+		dispatch({type: ACTIONS.SET_USER_SETTING, payload: JSON.parse(userSetting)})
 		theme.colors.background = state.appTheme.base_background
+
+		await new Promise(resolve => setTimeout(resolve, 100));
+		setAppIsReady(true)
 	}, [])
+
+	// if(!appIsReady) return null
 
 	return (
 
-			<SafeAreaProvider>
-				<NavigationContainer theme={theme}>
+		<SafeAreaProvider>
+			<NavigationContainer theme={theme}>
 
-					<StackNavigator/>
+				<StackNavigator/>
 
-				</NavigationContainer>
-			</SafeAreaProvider>
+			</NavigationContainer>
+		</SafeAreaProvider>
 
 	);
 }
@@ -129,22 +147,22 @@ function Base() {
 function StackNavigator() {
 
 	const [state, dispatch] = useContext(AppContext)
-
-
-	// APP Data initialization.
+	const [appIsReady, setAppIsReady] = useState(false)
 
 	useEffect(async () => {
-		await saveNoteData(JSON.stringify(TEST_DATA))
-		const data = await getNoteData()
-		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: JSON.parse(data)})
-	}, [])
+		theme.colors.background = state.appTheme.base_background
+		await new Promise(resolve => setTimeout(resolve, 100));
+		setAppIsReady(true)
+	}, [state])
+
+	// if(!appIsReady) return null
 
 	return (
-		<Stack.Navigator initialRouteName="Today">
+		<Stack.Navigator initialRouteName="ThisMonth">
 			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
 			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
-			<Stack.Screen name="Today" component={Today} options={{headerShown: false}}/>
+			<Stack.Screen name="ThisMonth" component={ThisMonth} options={{headerShown: false}}/>
 			<Stack.Screen name="MoodWriting" component={MoodWriting} options={{headerShown: false}}/>
 			<Stack.Screen name="Signin" component={Signin} options={{headerShown: false}}/>
 			<Stack.Screen name="Signup" component={Signup} options={{headerShown: false}}/>
@@ -185,7 +203,7 @@ function TabNavigator() {
 							/>
 						);
 					}
-					if (route.name === '心靈星球') {
+					if (route.name === '星球論壇') {
 						return (
 							<Ionicons
 								name={focused ? 'planet' : 'planet-outline'}
@@ -206,22 +224,29 @@ function TabNavigator() {
 				},
 				tabBarLabelStyle: {fontSize: 13,},
 
-				tabBarStyle: state.userSetting.tabBarDisplayFloat?
+				tabBarStyle: state.userSetting.tabBarDisplayFloat && state.appThemeSelected === "blackwhite"?
+
 					{
-						backgroundColor: state.appTheme.top_background_weak,
-						borderColor: state.appTheme.top_background_darken,
+						backgroundColor: state.appTheme.top_background_darken_opaque,
+						elevation: 4,
 						height: 52,
 						width: WIDTH * 0.9,
 						marginLeft: WIDTH * 0.05,
 						borderTopWidth: 0,
 						bottom: 30,
-						elevation: 0,
 						opacity: 1,
 						borderRadius: 64,
 						paddingHorizontal: 8,
+						shadowRadius: 6,
+						shadowOffset: {
+							height: 1,
+						},
+						shadowColor: "dimgray",
+						shadowOpacity: .3,
 					} :
+
 					{
-						backgroundColor: state.appTheme.top_background_weak,
+						backgroundColor: state.appTheme.tab_background,
 						borderTopColor: state.appTheme.top_background_darken,
 						borderTopWidth: 1,
 						opacity: 1,
@@ -232,7 +257,7 @@ function TabNavigator() {
 						paddingHorizontal: 16,
 					},
 
-				tabBarItemStyle: state.userSetting.tabBarDisplayFloat? {
+				tabBarItemStyle: state.userSetting.tabBarDisplayFloat && state.appThemeSelected === "blackwhite"? {
 
 					paddingVertical: 8,
 					height: 48
@@ -245,18 +270,18 @@ function TabNavigator() {
 					color: state.appTheme.base_background,
 					backgroundColor:  state.appTheme.tab_active_accent,
 					borderWidth: 2,
-					borderColor:  state.appTheme.top_background,
+					borderColor:  state.appTheme.tab_background,
 				},
 
-				tabBarShowLabel: !state.userSetting.tabBarDisplayFloat,
-				tabBarInactiveTintColor: state.appTheme.tab_inactive,
-				tabBarActiveTintColor: state.appTheme.tab_active,
+				tabBarShowLabel: !state.userSetting.tabBarDisplayFloat || state.appThemeSelected !== "blackwhite",
+				tabBarInactiveTintColor: state.userSetting.tabBarDisplayFloat && state.appThemeSelected === "blackwhite"? state.appTheme.tab_inactive_float : state.appTheme.tab_inactive,
+				tabBarActiveTintColor: state.userSetting.tabBarDisplayFloat && state.appThemeSelected === "blackwhite"? state.appTheme.tab_active_float : state.appTheme.tab_active,
 			})}
 		>
 
 			<Tab.Screen name="首頁" component={Home} options={{headerShown: false}}/>
 			<Tab.Screen name="心靈雞湯" component={MoodSupport} options={{headerShown: false}}/>
-			<Tab.Screen name="心靈星球" component={MoodGalaxy} options={{tabBarBadge: 99, headerShown: false}}/>
+			<Tab.Screen name="星球論壇" component={MoodGalaxy} options={{tabBarBadge: 99, headerShown: false}}/>
 			<Tab.Screen name="我的帳號" component={MyAccount} options={{headerShown: false}}/>
 		</Tab.Navigator>
 	)

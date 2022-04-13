@@ -80,7 +80,7 @@ export function SettingItem({position, onPress, children, ...props}){
 	switch(position){
 		case "top":
 			styleObject= {
-				borderTopColor: state.appTheme.border,
+				borderTopColor: "transparent",
 				borderTopRightRadius:16,
 				borderTopLeftRadius:16,
 				borderBottomWidth: 0}

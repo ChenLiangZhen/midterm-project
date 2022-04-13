@@ -83,7 +83,7 @@ const Signin = ({navigation}) => {
 						marginBottom: 36,
 					}]}>
 						<HStack >
-							<VarText type="xl" content="登入 MoodDiary" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
+							<VarText type="xl" content="登入 DiarySoup" color={state.appTheme.text_lighter} fontWeight={"bold"}/>
 						</HStack>
 					</animated.View>
 

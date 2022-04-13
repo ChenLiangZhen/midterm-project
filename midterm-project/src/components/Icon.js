@@ -116,3 +116,17 @@ export function Data({color, size, ...props}){
 		</View>
 	)
 }
+
+export function Check({color, size, ...props}){
+	return(
+		<View style={{
+			justifyContent: "center",
+			alignItems: "center",
+			height: size +2,
+			width: size +2,
+		}}
+		>
+			<Feather name="check" color={color} size={size}/>
+		</View>
+	)
+}

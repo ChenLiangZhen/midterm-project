@@ -135,7 +135,7 @@ const MoodWriting = ({navigation, route}) => {
 							width: "100%",
 							fontSize: 24,
 							fontWeight: "bold",
-							color: "dimgray"
+							color: state.appTheme.text
 						}}
 
 						autoCapitalize="none"
@@ -163,7 +163,7 @@ const MoodWriting = ({navigation, route}) => {
 							paddingVertical: 8,
 							width: "100%",
 							fontSize: 18,
-							color: "gray"
+							color: state.appTheme.text
 						}}
 
 						multiline={true }

@@ -1,18 +1,26 @@
 import {ImageBackground, KeyboardAvoidingView, Platform, Pressable, StatusBar, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AppContext} from "../global_state/AppStateProvider";
 
 export function BaseContainer({children, onTouchStart, type, ...props}){
 
 	const [state, dispatch] = useContext(AppContext)
 
+	const [background, setBackground] = useState("")
 	const [passwordInput, setPasswordInput] = useState("")
 	const [emailInput, setEmailInput] = useState("")
 	const [userData, setUserData] = useState("")
 
 	const [authStatus, setAuthStatus] = useState("N/A")
 	const [token, setToken] = useState({})
+
+	useEffect( async ()=>{
+		setBackground(state.userSetting.background)
+
+		await new Promise(resolve => setTimeout(resolve, 1000));
+
+	}, [])
 
 	return(
 		type === "tab"?
@@ -22,7 +30,22 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 					width: "100%",
 					flex: 1,
 				}} edges={['top', 'right', 'left']}>
-					<ImageBackground source={state.appThemeSelected === "classic_light"? {} : require("../resource/bigcookie.png")}
+
+					{state.appThemeSelected === "blackwhite"?
+						<KeyboardAvoidingView
+							behavior={Platform.OS === "ios" ? "padding": "height"}
+							style={{
+								flex: 1,
+								...props}}>
+
+							<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
+
+
+							{children}
+						</KeyboardAvoidingView>:
+
+					<ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
+
 					                 style={{
 						                 flex: 1,
 						                 justifyContent: "center",
@@ -39,9 +62,7 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 
 							{children}
 						</KeyboardAvoidingView>
-
-					</ImageBackground>
-
+					</ImageBackground> }
 				</SafeAreaView>
 
 			:
@@ -53,12 +74,9 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 				flex: 1,
 
 			}} edges={['top','right', 'bottom', 'left']} >
-				<ImageBackground source={state.appThemeSelected === "classic_light"? {} : require("../resource/bigcookie.png")}
-				                 style={{
-										  flex: 1,
-					                 justifyContent: "center",
-				                 }}
-				                 resizeMode={"cover"}>
+
+				{state.appThemeSelected === "blackwhite"?
+
 					<KeyboardAvoidingView
 						behavior={Platform.OS === "ios" ? "padding": "height"}
 						style={{
@@ -71,7 +89,27 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 
 						{children}
 					</KeyboardAvoidingView>
-				</ImageBackground>
+					: <ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
+
+					                   style={{
+						                   flex: 1,
+						                   justifyContent: "center",
+					                   }}
+					                   resizeMode={"cover"}>
+						<KeyboardAvoidingView
+							behavior={Platform.OS === "ios" ? "padding": "height"}
+							style={{
+								flex: 1,
+								backgroundColor: "transparent",
+								...props}}>
+
+							<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/>
+
+
+							{children}
+						</KeyboardAvoidingView>
+					</ImageBackground>}
+
 			</SafeAreaView>
 	)
 }
