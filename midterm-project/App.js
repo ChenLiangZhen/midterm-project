@@ -115,12 +115,22 @@ function Base() {
 	//APP INITIALIZATION
 
 	useEffect(async ()=>{
+
 		await saveNoteData(JSON.stringify(TEST_DATA))
+
 		const data = await getNoteData()
 		const userSetting = await getUserSetting()
-		const themeSeleted = await getThemeSelected()
-		dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: themeSeleted})
-		dispatch({type: ACTIONS.SET_APP_THEME, payload: themeSeleted})
+		const themeSelected = await getThemeSelected()
+
+		if (themeSelected === undefined) {
+			dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: "warm_brown"})
+			dispatch({type: ACTIONS.SET_APP_THEME, payload: "warm_brown"})
+		}
+		else {
+			dispatch({type: ACTIONS.SET_APP_THEME_SELECTED, payload: themeSelected})
+			dispatch({type: ACTIONS.SET_APP_THEME, payload: themeSelected})
+		}
+
 		dispatch({type: ACTIONS.SET_USER_NOTE_DATA, payload: JSON.parse(data)})
 		dispatch({type: ACTIONS.SET_USER_SETTING, payload: JSON.parse(userSetting)})
 		theme.colors.background = state.appTheme.base_background
@@ -150,6 +160,7 @@ function StackNavigator() {
 	const [appIsReady, setAppIsReady] = useState(false)
 
 	useEffect(async () => {
+
 		theme.colors.background = state.appTheme.base_background
 		await new Promise(resolve => setTimeout(resolve, 100));
 		setAppIsReady(true)
@@ -158,7 +169,7 @@ function StackNavigator() {
 	// if(!appIsReady) return null
 
 	return (
-		<Stack.Navigator initialRouteName="ThisMonth">
+		<Stack.Navigator initialRouteName="Splash">
 			<Stack.Screen name="Splash"  component={Splash} options={{headerShown: false}}/>
 			<Stack.Screen name="Setting"  component={Setting} options={{headerShown: false}}/>
 			<Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}}/>
