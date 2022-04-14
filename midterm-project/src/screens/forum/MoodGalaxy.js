@@ -66,11 +66,12 @@ const MoodGalaxy = ({navigation}) => {
 						<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
 						<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 					</VStack>
-					<HStack marginTop={20} align>
+					<HStack width={"100%"} marginTop={20} justifyContent={"space-between"} align>
 						<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
-						<HStack width={170}/>
-						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-						<HeartSplash/>
+						<HStack align>
+							<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+							<HeartSplash/>
+						</HStack>
 					</HStack>
 
 				</Pressable><Pressable
@@ -90,11 +91,12 @@ const MoodGalaxy = ({navigation}) => {
 					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
 					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 				</VStack>
-				<HStack marginTop={20} align>
+				<HStack width={"100%"} marginTop={20} justifyContent={"space-between"} align>
 					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
-					<HStack width={170}/>
-					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-					<HeartSplash/>
+					<HStack align>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+						<HeartSplash/>
+					</HStack>
 				</HStack>
 
 			</Pressable><Pressable
@@ -114,11 +116,12 @@ const MoodGalaxy = ({navigation}) => {
 					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
 					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 				</VStack>
-				<HStack marginTop={20} align>
+				<HStack width={"100%"} marginTop={20} justifyContent={"space-between"} align>
 					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
-					<HStack width={170}/>
-					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-					<HeartSplash/>
+					<HStack align>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+						<HeartSplash/>
+					</HStack>
 				</HStack>
 
 			</Pressable><Pressable
@@ -138,11 +141,12 @@ const MoodGalaxy = ({navigation}) => {
 					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
 					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 				</VStack>
-				<HStack marginTop={20} align>
+				<HStack width={"100%"} marginTop={20} justifyContent={"space-between"} align>
 					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
-					<HStack width={170}/>
-					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-					<HeartSplash/>
+					<HStack align>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+						<HeartSplash/>
+					</HStack>
 				</HStack>
 
 			</Pressable><Pressable
@@ -151,7 +155,7 @@ const MoodGalaxy = ({navigation}) => {
 					paddingVertical:12,
 					paddingHorizontal:13,
 					marginTop:20,
-					marginBottom: 24,
+					marginBottom:20,
 					width: "90%",
 					backgroundColor:state.appTheme.top_background_weak,
 					borderWidth:1,
@@ -163,15 +167,15 @@ const MoodGalaxy = ({navigation}) => {
 					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
 					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 				</VStack>
-				<HStack marginTop={20} align>
+				<HStack width={"100%"} marginTop={20} justifyContent={"space-between"} align>
 					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
-					<HStack width={170}/>
-					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-					<HeartSplash/>
+					<HStack align>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+						<HeartSplash/>
+					</HStack>
 				</HStack>
 
 			</Pressable>
-
 			</ScrollView>
 		</BaseContainer>
 	)

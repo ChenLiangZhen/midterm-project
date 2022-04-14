@@ -30,7 +30,7 @@ export const appTheme = {
 
 	warm_brown: {
 		misc1: "transparent",
-		accent1: "#f7b4af",
+		accent1: "#e79d98",
 		base_background: "#FFFFF2",
 		top_background: "#eee5d6",
 		top_background_lighter: "#f6efe1",
