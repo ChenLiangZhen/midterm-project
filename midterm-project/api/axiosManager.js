@@ -5,7 +5,7 @@ const baseURL= "https://lightii.dev/"
 const baseTestURL= "https://lightii.ap.ngrok.io"
 
 const request = axios.create({
-	baseURL: baseTestURL,
+	baseURL: baseURL,
 })
 
 export async function requestManager(method: String, route: String, body: Object){
@@ -39,5 +39,5 @@ export async function requestManager(method: String, route: String, body: Object
 }
 
 export const signManager = axios.create({
-	baseURL: baseTestURL
+	baseURL: baseURL
 })

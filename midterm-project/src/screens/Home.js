@@ -1,12 +1,13 @@
 import {FlatList, Platform, Pressable, StatusBar} from "react-native";
-import {BaseContainer, Container, HStack, PressBox} from "../components/Layout";
+import {BaseContainer, Container, HStack, PressBox, VStack} from "../components/Layout";
 import {FeatherPenCircleIcon, LeftArrowIcon, RightArrowIcon} from "../components/IconButton";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {VarText} from "../components/Text";
 import {genCalendarObj} from "calendar-generator";
 import {animated, config, useTransition} from "@react-spring/native";
 import {WIDTH} from "../utility/deviceUtility";
 import {AppContext} from "../global_state/AppStateProvider";
+import {useFocusEffect} from "@react-navigation/native";
 
 function RenderItemDay({year, day, month, navigateDirection, navigation}) {
 
@@ -92,6 +93,9 @@ export const Home = ({navigation}) => {
 	const [calMonth, setCalMonth] = useState(new Date().getMonth() + 1)
 	const [calDay, setCalDay] = useState(new Date().getDate())
 	const [calMonthData, setCalMonthData] = useState()
+
+	const [cheerWords, setCheerWords] = useState("")
+	const [postfix, setPostfix] = useState("")
 
 	const [navigateMonth, setNavigateMonth] = useState(true)
 	const [navigateDirection, setNavigateDirection] = useState("right")
@@ -217,6 +221,20 @@ export const Home = ({navigation}) => {
 		setIsDataReady(true)
 	}, [dateData])
 
+	useFocusEffect(
+		useCallback(() => {
+			const random = new Date().getMilliseconds()
+			if(random % 8 === 0) {setCheerWords("今天也要開心ㄛ！"); setPostfix("～")}
+			if(random % 8 === 1) {setCheerWords("有什麼心事嗎～"); setPostfix("？")}
+			if(random % 8 === 2) {setCheerWords("來紀錄今天的心情吧！ "); setPostfix("～")}
+			if(random % 8 === 3) {setCheerWords("煩惱通通不見拉～"); setPostfix("!")}
+			if(random % 8 === 4) {setCheerWords("不管如何，明天一定會更好！"); setPostfix("!")}
+			if(random % 8 === 5) {setCheerWords("今天過得如何啊～"); setPostfix("？")}
+			if(random % 8 === 6) {setCheerWords("偷偷告訴你ㄛ，其實我主人很兇．．．"); setPostfix("可以安慰我嗎？ ＱＱＱＱ")}
+			if(random % 8 === 7) {setCheerWords("好想睡覺喔．．． zzzz"); setPostfix("不累嗎？")}
+		}, [])
+	);
+
 	const renderItem = ({item}) => (
 		<RenderItemDay day={item.day} month={calMonth} year={calYear} navigateDirection={navigateDirection} navigation={navigation}/>
 	)
@@ -224,6 +242,13 @@ export const Home = ({navigation}) => {
 
 	return (
 		<BaseContainer marginTop={Platform.OS === "ios"? 12 : 12} width="100%" height="100%" justifyContent={"space-evenly"}>
+
+			<VStack width={WIDTH - 46} height={100} align justifyContent={"center"} backgroundColor={state.appTheme.top_background_weak} borderColor={state.appTheme.top_background} borderWidth={2} marginHorizontal={23} borderRadius={16}>
+
+				<VarText type={"lg"} fontWeight={"bold"} content={cheerWords} color={state.appTheme.text_lighter} lineHeight={34}/>
+				{state.userSignedIn? <VarText type={"lg"} fontWeight={"bold"} content={"， " + state.userSetting.userName + " " + postfix} color={state.appTheme.text_lighter}/> : <></>}
+
+			</VStack>
 
 			{state.appThemeSelected === "dark"?
 				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
@@ -297,13 +322,13 @@ export const Home = ({navigation}) => {
 			</HStack>
 
 			<HStack backgroundColor="transparent" marginBottom={2} width={WIDTH * 0.9} align justify>
-				<WeekDay day="MON"/>
-				<WeekDay day="TUE"/>
-				<WeekDay day="WED"/>
-				<WeekDay day="THU"/>
-				<WeekDay day="FRI"/>
-				<WeekDay day="SAT"/>
-				<WeekDay day="SUN"/>
+				<WeekDay day="一"/>
+				<WeekDay day="二"/>
+				<WeekDay day="三"/>
+				<WeekDay day="四"/>
+				<WeekDay day="五"/>
+				<WeekDay day="六"/>
+				<WeekDay day="日"/>
 			</HStack>
 
 				{

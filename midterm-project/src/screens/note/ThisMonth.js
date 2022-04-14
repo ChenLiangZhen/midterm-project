@@ -57,7 +57,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: state.appTheme.tab_background,
+						backgroundColor: state.appTheme.top_background_weak,
 					borderRadius: 10,
 					borderBottomLeftRadius: 50,
 					borderTopLeftRadius: 50,
@@ -70,7 +70,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 						height: (!gridMode)? 100 : 150,
 						width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 						margin: 8,
-						backgroundColor: state.appTheme.tab_background,
+						backgroundColor: state.appTheme.top_background_weak,
 						borderRadius: 10,
 						borderColor: state.appTheme.top_background_darken,
 						borderWidth: 2,
@@ -82,7 +82,7 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 							height: (!gridMode)? 100 : 150,
 							width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 							margin: 8,
-							backgroundColor: state.appTheme.tab_background,
+							backgroundColor: state.appTheme.top_background_weak,
 							borderRadius: 10,
 							borderBottomLeftRadius: 50,
 							borderTopLeftRadius: 50,
@@ -96,8 +96,9 @@ const NoteItem = ({id, title, content, gridMode, createdAt, noteMood, navigation
 					height: (!gridMode)? 100 : 150,
 					width: (!gridMode) ? (WIDTH - 32) : (WIDTH - 52) /2,
 					margin: 8,
-					backgroundColor: state.appTheme.tab_background,
-					borderRadius: 10,
+						backgroundColor: state.appTheme.top_background_weak,
+
+						borderRadius: 10,
 
 					borderColor: state.appTheme.top_background_darken,
 					borderWidth: 2,
@@ -250,9 +251,8 @@ const ThisMonth = ({navigation}) => {
 				<LeftArrowIcon color={state.appTheme.text_lighter} size={30} onPress={() => navigation.goBack()}/>
 
 				<HStack align>
-					<VarText type="xl" content={ " - "} color="#ccc"/>
-					<VarText type="xl" content={" - "} color="gray"/>
-					<VarText type="xl" content={"-"} color="gray"/>
+					<VarText type="xl" content={new Date().getFullYear() + " - "} color={state.appTheme.tab_active}/>
+					<VarText type="xl" content={(new Date().getMonth() + 1) + ""} color={state.appTheme.tab_active}/>
 					</HStack>
 
 

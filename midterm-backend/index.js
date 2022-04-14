@@ -16,7 +16,7 @@ app.use(userRoutes)
 
 const URI = 'mongodb://client:testdatabase@localhost:30123/?authSource=admin'
 const testURI = 'mongodb://localhost:27017'
-mongoose.connect(testURI)
+mongoose.connect(URI)
    .then(() => { console.log("successfully connected modified!!") }, rej => {console.log("failed to connect: " + rej)})
 
 app.get("/api", userAuth, (req, res)=>{

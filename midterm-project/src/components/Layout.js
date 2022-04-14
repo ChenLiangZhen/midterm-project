@@ -46,7 +46,7 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 							{children}
 						</KeyboardAvoidingView>:
 
-					<ImageBackground source={state.userSetting.displayBackground? require("../resource/bigcookie.png") : {}}
+					<ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
 
 					                 style={{
 						                 flex: 1,
@@ -92,7 +92,7 @@ export function BaseContainer({children, onTouchStart, type, ...props}){
 						{children}
 
 					</KeyboardAvoidingView>
-					: <ImageBackground source={state.userSetting.displayBackground? require("../resource/bigcookie.png") : {}}
+					: <ImageBackground source={state.userSetting.displayBackground? require("../resource/cookiemr.png") : {}}
 
 					                   style={{
 						                   flex: 1,

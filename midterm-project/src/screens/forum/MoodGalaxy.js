@@ -1,5 +1,5 @@
 import {BaseContainer, Container, HStack, VStack} from "../../components/Layout";
-import {Keyboard, Pressable, ScrollView, Text, TextInput} from "react-native";
+import {Keyboard, Pressable, ScrollView, StatusBar, Text, TextInput} from "react-native";
 import React, {useContext, useEffect, useState} from "react";
 import {VarText} from "../../components/Text";
 import {NoteHeader} from "../../components/DefinedLayout";
@@ -25,9 +25,14 @@ const MoodGalaxy = ({navigation}) => {
 
 	return(
 		<BaseContainer type={"tab"} alignItems="center">
+
+			{state.appThemeSelected === "dark"?
+				<StatusBar barStyle="light-content" backgroundColor={state.appTheme.base_background}/> :
+				<StatusBar barStyle="dark-content" backgroundColor={state.appTheme.base_background}/> }
+
 			<HStack marginTop={16} height={42} width={"80%"} backgroundColor={state.appTheme.tab_background} borderRadius={18} justifyContent="space-around" align>
 				<Feather style={{marginLeft:2,}} name="search" size={20} color={state.appTheme.text_lighter}/>
-				<Text style={{marginRight:4,color:state.appTheme.tab_inactive ,fontSize:14}}>搜尋日記</Text>
+				<Text style={{marginRight:4,color:state.appTheme.tab_inactive ,fontSize:16}}>搜尋日記</Text>
 				<HStack width={180}/>
 			</HStack>
 
@@ -45,122 +50,127 @@ const MoodGalaxy = ({navigation}) => {
 				{/*one box*/}
 
 				<Pressable
-					onPress={()=>{navigation.navigate()}}
+					onPress={()=>{}}
 					style={{
 						paddingVertical:12,
 						paddingHorizontal:13,
 						marginTop:20,
 						width: "90%",
-						backgroundColor:state.appTheme.top_background,
+						backgroundColor:state.appTheme.top_background_weak,
 						borderWidth:1,
 						borderRadius:10,
 						borderColor:state.appTheme.top_background,
 					}}
 				>
 					<VStack>
-						<Text style={{fontSize:16,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
-						<Text style={{fontSize:14,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
+						<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
+						<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
 					</VStack>
 					<HStack marginTop={20} align>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active,}}>木子貍</Text>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
 						<HStack width={170}/>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+						<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
 						<HeartSplash/>
 					</HStack>
+
 				</Pressable><Pressable
-					onPress={()=>{navigation.navigate()}}
-					style={{
-						paddingVertical:12,
-						paddingHorizontal:13,
-						marginTop:20,
-						width: "90%",
-						backgroundColor:state.appTheme.top_background,
-						borderWidth:1,
-						borderRadius:10,
-						borderColor:state.appTheme.top_background,
-					}}
-				>
-					<VStack>
-						<Text style={{fontSize:16,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
-						<Text style={{fontSize:14,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
-					</VStack>
-					<HStack marginTop={20} align>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active,}}>木子貍</Text>
-						<HStack width={170}/>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-						<HeartSplash/>
-					</HStack>
-				</Pressable><Pressable
-					onPress={()=>{navigation.navigate()}}
-					style={{
-						paddingVertical:12,
-						paddingHorizontal:13,
-						marginTop:20,
-						width: "90%",
-						backgroundColor:state.appTheme.top_background,
-						borderWidth:1,
-						borderRadius:10,
-						borderColor:state.appTheme.top_background,
-					}}
-				>
-					<VStack>
-						<Text style={{fontSize:16,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
-						<Text style={{fontSize:14,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
-					</VStack>
-					<HStack marginTop={20} align>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active,}}>木子貍</Text>
-						<HStack width={170}/>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-						<HeartSplash/>
-					</HStack>
-				</Pressable><Pressable
-					onPress={()=>{navigation.navigate()}}
-					style={{
-						paddingVertical:12,
-						paddingHorizontal:13,
-						marginTop:20,
-						width: "90%",
-						backgroundColor:state.appTheme.top_background,
-						borderWidth:1,
-						borderRadius:10,
-						borderColor:state.appTheme.top_background,
-					}}
-				>
-					<VStack>
-						<Text style={{fontSize:16,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
-						<Text style={{fontSize:14,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
-					</VStack>
-					<HStack marginTop={20} align>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active,}}>木子貍</Text>
-						<HStack width={170}/>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-						<HeartSplash/>
-					</HStack>
-				</Pressable><Pressable
-					onPress={()=>{navigation.navigate()}}
-					style={{
-						paddingVertical:12,
-						paddingHorizontal:13,
-						marginTop:20,
-						marginBottom: 32,
-						width: "90%",
-						backgroundColor:state.appTheme.top_background,
-						borderWidth:1,
-						borderRadius:10,
-						borderColor:state.appTheme.top_background,
-					}}
-				>
-					<VStack>
-						<Text style={{fontSize:16,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
-						<Text style={{fontSize:14,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
-					</VStack>
-					<HStack marginTop={20} align>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active,}}>木子貍</Text>
-						<HStack width={170}/>
-						<Text style={{fontSize:12,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
-						<HeartSplash/>
-					</HStack>
-				</Pressable>
+				onPress={()=>{}}
+				style={{
+					paddingVertical:12,
+					paddingHorizontal:13,
+					marginTop:20,
+					width: "90%",
+					backgroundColor:state.appTheme.top_background_weak,
+					borderWidth:1,
+					borderRadius:10,
+					borderColor:state.appTheme.top_background,
+				}}
+			>
+				<VStack>
+					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
+					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
+				</VStack>
+				<HStack marginTop={20} align>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
+					<HStack width={170}/>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+					<HeartSplash/>
+				</HStack>
+
+			</Pressable><Pressable
+				onPress={()=>{}}
+				style={{
+					paddingVertical:12,
+					paddingHorizontal:13,
+					marginTop:20,
+					width: "90%",
+					backgroundColor:state.appTheme.top_background_weak,
+					borderWidth:1,
+					borderRadius:10,
+					borderColor:state.appTheme.top_background,
+				}}
+			>
+				<VStack>
+					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
+					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
+				</VStack>
+				<HStack marginTop={20} align>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
+					<HStack width={170}/>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+					<HeartSplash/>
+				</HStack>
+
+			</Pressable><Pressable
+				onPress={()=>{}}
+				style={{
+					paddingVertical:12,
+					paddingHorizontal:13,
+					marginTop:20,
+					width: "90%",
+					backgroundColor:state.appTheme.top_background_weak,
+					borderWidth:1,
+					borderRadius:10,
+					borderColor:state.appTheme.top_background,
+				}}
+			>
+				<VStack>
+					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
+					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
+				</VStack>
+				<HStack marginTop={20} align>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
+					<HStack width={170}/>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+					<HeartSplash/>
+				</HStack>
+
+			</Pressable><Pressable
+				onPress={()=>{}}
+				style={{
+					paddingVertical:12,
+					paddingHorizontal:13,
+					marginTop:20,
+					marginBottom: 24,
+					width: "90%",
+					backgroundColor:state.appTheme.top_background_weak,
+					borderWidth:1,
+					borderRadius:10,
+					borderColor:state.appTheme.top_background,
+				}}
+			>
+				<VStack>
+					<Text style={{fontSize:18,color:state.appTheme.text_light,fontWeight:"bold",marginBottom:8,}}>這是別人日記的標題</Text>
+					<Text style={{fontSize:16,color:state.appTheme.text_light,lineHeight:22}}>在洛杉磯，從黎明時分到落日餘暉籠罩大地，女演員暨品牌大使莉莉-蘿絲‧戴普 (Lily-Rose Depp) 展現年輕人獨有......</Text>
+				</VStack>
+				<HStack marginTop={20} align>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active,}}>木子貍</Text>
+					<HStack width={170}/>
+					<Text style={{fontSize:14,color:state.appTheme.tab_active, marginRight:12,}}>2022/04/06</Text>
+					<HeartSplash/>
+				</HStack>
+
+			</Pressable>
 
 			</ScrollView>
 		</BaseContainer>
